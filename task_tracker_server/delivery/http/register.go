@@ -11,6 +11,9 @@ func RegisterHTTPEndpoints(router *gin.Engine, uc task_tracker_server.Usecase) {
 
 	apiEndpoints := router.Group("/api")
 	{
-		apiEndpoints.POST("/login", h.Login)
+		//http://localhost:8585/api/signup
+		apiEndpoints.POST("/signup", h.SignUp)
+		//http://localhost:8585/api/signin
+		apiEndpoints.POST("/signin", h.SignIn)
 	}
 }

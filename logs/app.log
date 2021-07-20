@@ -1,0 +1,4 @@
+{"action":"Failed insert new user to db","data":"","file":"task_trecker_server/repo/mysql","level":"error","msg":"Error 1054: Unknown column 'pass' in 'field list'","time":"2021-07-20T11:31:50+03:00"}
+{"action":"Failed insert new user to db","data":"","file":"task_trecker_server/repo/mysql","level":"error","msg":"Error 1054: Unknown column 'pass_hash' in 'field list'","time":"2021-07-20T11:34:48+03:00"}
+{"action":"Failed read group from db","data":"1","file":"task_tracker_server/repo/mysql","level":"error","msg":"Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'groups WHERE id = ?' at line 1","time":"2021-07-20T11:36:46+03:00"}
+{"action":"Failed read group from db","data":"1","file":"task_tracker_server/repo/mysql","level":"error","msg":"missing destination name group_name in *mysql.dbGroup","time":"2021-07-20T11:42:07+03:00"}
