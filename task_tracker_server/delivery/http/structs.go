@@ -7,6 +7,12 @@ type Handler struct {
 	uc task_tracker_server.Usecase
 }
 
+type Responce struct {
+	Status string      `json:"status"`
+	Error  string      `json:"error"`
+	Data   interface{} `json:"data"`
+}
+
 type inpGroup struct {
 	ID   uint64 `json:"id,omitempty"`
 	Name string `json:"name,omitempty"`

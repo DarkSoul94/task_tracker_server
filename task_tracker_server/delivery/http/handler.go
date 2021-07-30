@@ -15,6 +15,7 @@ func NewHandler(uc task_tracker_server.Usecase) *Handler {
 	}
 }
 
+//SignUp ...
 func (h *Handler) SignUp(c *gin.Context) {
 	var (
 		user  loginUser
@@ -24,19 +25,20 @@ func (h *Handler) SignUp(c *gin.Context) {
 
 	err = c.BindJSON(&user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{"status": "error", "error": err})
+		c.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return
 	}
 
 	mUser, err = h.uc.SignUp(h.toModelLoginUser(user))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{"status": "error", "error": err})
+		c.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{"status": "success", "user": h.toInpUser(mUser)})
+	c.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: h.toInpUser(mUser)})
 }
 
+//SignIn ...
 func (h *Handler) SignIn(c *gin.Context) {
 	var (
 		user  loginUser
@@ -46,17 +48,17 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 	err = c.BindJSON(&user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{"status": "error", "error": err})
+		c.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return
 	}
 
 	mUser, err = h.uc.SignIn(h.toModelLoginUser(user))
 	if err != nil {
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, map[string]interface{}{"status": "error", "error": err})
+			c.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
 			return
 		}
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{"status": "success", "user": h.toInpUser(mUser)})
+	c.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: h.toInpUser(mUser)})
 }
