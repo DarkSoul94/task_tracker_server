@@ -10,10 +10,18 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/DarkSoul94/task_tracker_server/task_tracker_server"
-	task_tracker_serverhttp "github.com/DarkSoul94/task_tracker_server/task_tracker_server/delivery/http"
-	task_tracker_serverrepo "github.com/DarkSoul94/task_tracker_server/task_tracker_server/repo/mysql"
-	task_tracker_serverusecase "github.com/DarkSoul94/task_tracker_server/task_tracker_server/usecase"
+	"github.com/DarkSoul94/task_tracker_server/auth"
+	authHttp "github.com/DarkSoul94/task_tracker_server/auth/delivery/http"
+	authUsecase "github.com/DarkSoul94/task_tracker_server/auth/usecase"
+
+	"github.com/DarkSoul94/task_tracker_server/tasks"
+	tasksRepository "github.com/DarkSoul94/task_tracker_server/tasks/repo/mysql"
+	tasksUsecase "github.com/DarkSoul94/task_tracker_server/tasks/usecase"
+
+	"github.com/DarkSoul94/task_tracker_server/user_manager"
+	user_managerRepository "github.com/DarkSoul94/task_tracker_server/user_manager/repo/mysql"
+	user_managerUsecase "github.com/DarkSoul94/task_tracker_server/user_manager/usecase"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
@@ -23,32 +31,53 @@ import (
 
 // App ...
 type App struct {
-	task_tracker_serverUC   task_tracker_server.Usecase
-	task_tracker_serverRepo task_tracker_server.Repository
-	httpServer              *http.Server
+	authUC auth.AuthUC
+
+	uManagerUC   user_manager.UserManagerUC
+	uManagerRepo user_manager.UserManagerRepo
+
+	tasksUC   tasks.TasksUC
+	tasksRepo tasks.TasksRepo
+
+	httpServer *http.Server
 }
 
 // NewApp ...
 func NewApp() *App {
 	db := initDB()
-	repo := task_tracker_serverrepo.NewRepo(db)
-	uc := task_tracker_serverusecase.NewUsecase(repo)
+
+	uManagerRepo := user_managerRepository.NewRepo(db)
+	uManagerUC := user_managerUsecase.NewUsecase(uManagerRepo)
+
+	authUC := authUsecase.NewUsecase(
+		uManagerUC,
+		viper.GetString("app.auth.secret_key"),
+		[]byte(viper.GetString("app.auth.signing_key")),
+		viper.GetDuration("app.auth.ttl"))
+
+	tasksRepo := tasksRepository.NewRepo(db)
+	tasksUC := tasksUsecase.NewUsecase(tasksRepo, uManagerUC)
+
 	return &App{
-		task_tracker_serverUC:   uc,
-		task_tracker_serverRepo: repo,
+		authUC:       authUC,
+		uManagerUC:   uManagerUC,
+		uManagerRepo: uManagerRepo,
+		tasksUC:      tasksUC,
+		tasksRepo:    tasksRepo,
 	}
 }
 
 // Run run task_tracker_serverlication
 func (a *App) Run(port string) error {
-	defer a.task_tracker_serverRepo.Close()
+	defer a.closeDB()
+
 	router := gin.Default()
 	router.Use(
 		gin.Recovery(),
 		gin.Logger(),
 	)
 
-	task_tracker_serverhttp.RegisterHTTPEndpoints(router, a.task_tracker_serverUC)
+	authHttp.RegisterHTTPEndpoints(router, a.authUC)
 
 	a.httpServer = &http.Server{
 		Addr:           ":" + port,
@@ -111,4 +140,9 @@ func runMigrations(db *sql.DB) {
 	if err != nil && err != migrate.ErrNoChange && err != migrate.ErrNilVersion {
 		fmt.Println(err)
 	}
+}
+
+func (a *App) closeDB() {
+	a.tasksRepo.Close()
+	a.uManagerRepo.Close()
 }

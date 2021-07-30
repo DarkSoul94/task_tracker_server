@@ -1,16 +1,16 @@
 package http
 
-import "github.com/DarkSoul94/task_tracker_server/task_tracker_server"
+import "github.com/DarkSoul94/task_tracker_server/auth"
 
 // Handler ...
 type Handler struct {
-	uc task_tracker_server.Usecase
+	ucAuth auth.AuthUC
 }
 
 type Responce struct {
 	Status string      `json:"status"`
-	Error  string      `json:"error"`
-	Data   interface{} `json:"data"`
+	Error  string      `json:"error,omitempty"`
+	Data   interface{} `json:"data,omitempty"`
 }
 
 type inpGroup struct {
