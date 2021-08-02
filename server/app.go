@@ -15,6 +15,7 @@ import (
 	authUsecase "github.com/DarkSoul94/task_tracker_server/auth/usecase"
 
 	"github.com/DarkSoul94/task_tracker_server/tasks"
+	tasksHttp "github.com/DarkSoul94/task_tracker_server/tasks/delivery/http"
 	tasksRepository "github.com/DarkSoul94/task_tracker_server/tasks/repo/mysql"
 	tasksUsecase "github.com/DarkSoul94/task_tracker_server/tasks/usecase"
 
@@ -78,6 +79,8 @@ func (a *App) Run(port string) error {
 	)
 
 	authHttp.RegisterHTTPEndpoints(router, a.authUC)
+	authHttpMiddleware := authHttp.NewAuthMiddleware(a.authUC)
+	tasksHttp.RegisterHTTPEndpoints(router, a.tasksUC, authHttpMiddleware)
 
 	a.httpServer = &http.Server{
 		Addr:           ":" + port,

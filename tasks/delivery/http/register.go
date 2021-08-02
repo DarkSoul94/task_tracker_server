@@ -6,10 +6,11 @@ import (
 )
 
 // RegisterHTTPEndpoints ...
-func RegisterHTTPEndpoints(router *gin.Engine, ucTasks tasks.TasksUC) {
+func RegisterHTTPEndpoints(router *gin.Engine, ucTasks tasks.TasksUC, middlewares ...gin.HandlerFunc) {
 	h := NewHandler(ucTasks)
 
 	tasksEndpoints := router.Group("/tasks")
+	tasksEndpoints.Use(middlewares...)
 	{
 		//http://localhost:8585/tasks
 		tasksEndpoints.POST("", h.CreateTask)

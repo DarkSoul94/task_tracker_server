@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"context"
+	"fmt"
 	"time"
 
 	"github.com/DarkSoul94/task_tracker_server/models"
@@ -88,4 +90,23 @@ func (u *Usecase) GenerateToken(user *models.User) (string, error) {
 	}
 
 	return strToken, nil
+}
+
+func (u *Usecase) ParseToken(ctx context.Context, accessToken string) (*models.User, error) {
+	token, err := jwt.ParseWithClaims(accessToken, &AuthClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return u.signingKey, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if claims, ok := token.Claims.(*AuthClaims); ok && token.Valid {
+		return claims.User, nil
+	}
+
+	return nil, nil
 }
