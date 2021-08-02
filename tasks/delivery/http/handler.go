@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -30,13 +29,6 @@ func (h *Handler) GetTasksList(ctx *gin.Context) {
 	if err != nil {
 		userID = 0
 	}
-
-	authHeader := ctx.GetHeader("Authorization")
-	if authHeader == "" {
-		ctx.AbortWithStatus(http.StatusUnauthorized)
-		return
-	}
-	fmt.Println(authHeader)
 
 	tasksList, err = h.ucTasks.GetTasksList(userID)
 	if err != nil {
