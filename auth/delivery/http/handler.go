@@ -40,16 +40,11 @@ func (h *Handler) SignUp(ctx *gin.Context) {
 
 //SignIn ...
 func (h *Handler) SignIn(ctx *gin.Context) {
-	type outputData struct {
-		User  *inpUser
-		Token string `json:"token"`
-	}
 	var (
 		user    loginUser
 		mUser   models.User
 		outUser inpUser
 		err     error
-		data    outputData
 	)
 
 	err = ctx.BindJSON(&user)
@@ -58,14 +53,16 @@ func (h *Handler) SignIn(ctx *gin.Context) {
 		return
 	}
 
-	data.Token, mUser, err = h.ucAuth.SignIn(h.toModelLoginUser(user))
+	mUser, err = h.ucAuth.SignIn(h.toModelLoginUser(user))
 	if err != nil {
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
-			return
-		}
+		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
+		return
 	}
 	outUser = h.toInpUser(mUser)
-	data.User = &outUser
-	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: data})
+	outUser.Token, err = h.ucAuth.GenerateToken(&mUser)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: outUser})
 }

@@ -10,3 +10,4 @@
 {"action":"Failed read user from db","data":"rootttt","file":"task_tracker_server/repo/mysql","level":"error","msg":"sql: no rows in result set","time":"2021-07-29T15:22:34+03:00"}
 {"action":"Failed read user from db","data":"","file":"task_tracker_server/repo/mysql","level":"error","msg":"sql: no rows in result set","time":"2021-07-29T16:13:59+03:00"}
 {"action":"Failed read user from db","data":"","file":"task_tracker_server/repo/mysql","level":"error","msg":"sql: no rows in result set","time":"2021-07-29T16:14:45+03:00"}
+{"action":"Failed read user from db","data":"","file":"task_tracker_server/repo/mysql","level":"error","msg":"sql: no rows in result set","time":"2021-08-02T12:22:47+03:00"}

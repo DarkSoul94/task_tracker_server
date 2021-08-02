@@ -1,5 +1,9 @@
 app:
   http_port: 8888
+  auth:
+    secret_key: ""
+    signing_key: ""
+    ttl: 1
   log:
     dir: "logs"
     file: "app.log"

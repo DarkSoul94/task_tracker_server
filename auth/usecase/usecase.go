@@ -49,34 +49,43 @@ func (u *Usecase) SignUp(user *models.LoginUser) (models.User, error) {
 	return u.userManager.CreateUser(user.Name, hash)
 }
 
-func (u *Usecase) SignIn(inpUser *models.LoginUser) (string, models.User, error) {
+func (u *Usecase) SignIn(inpUser *models.LoginUser) (models.User, error) {
 	var (
-		user     models.User
+		user models.User
+		err  error
+	)
+
+	user, err = u.userManager.GetUserByName(inpUser.Name)
+	if err != nil {
+		return models.User{}, err
+	}
+
+	if inpUser.VerifyPass(user.PassHash) {
+		return user, nil
+	} else {
+		return models.User{}, ErrLoginFailed
+	}
+}
+
+func (u *Usecase) GenerateToken(user *models.User) (string, error) {
+	var (
 		token    *jwt.Token
 		strToken string
 		err      error
 	)
 
-	user, err = u.userManager.GetUserByName(inpUser.Name)
+	claims := AuthClaims{
+		User: user,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: jwt.At(time.Now().Add(u.expireDuration)),
+		},
+	}
+	token = jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	strToken, err = token.SignedString(u.signingKey)
 	if err != nil {
-		return strToken, models.User{}, err
+		logger.LogError(ErrCreateToken.Error(), "auth/usecase", user.Name, err)
+		return "", ErrCreateToken
 	}
 
-	if inpUser.VerifyPass(user.PassHash) {
-		claims := AuthClaims{
-			User: &user,
-			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: jwt.At(time.Now().Add(u.expireDuration)),
-			},
-		}
-		token = jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		strToken, err = token.SignedString(u.signingKey)
-		if err != nil {
-			logger.LogError(ErrCreateToken.Error(), "auth/usecase", user.Name, err)
-			return "", models.User{}, ErrCreateToken
-		}
-		return strToken, user, nil
-	} else {
-		return strToken, models.User{}, ErrLoginFailed
-	}
+	return strToken, nil
 }
