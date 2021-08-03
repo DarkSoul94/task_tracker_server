@@ -6,14 +6,14 @@ import (
 )
 
 // RegisterHTTPEndpoints ...
-func RegisterHTTPEndpoints(router *gin.Engine, ucAuth auth.AuthUC) {
+func RegisterHTTPEndpoints(router *gin.RouterGroup, ucAuth auth.AuthUC) {
 	h := NewHandler(ucAuth)
 
 	authEndpoints := router.Group("/auth")
 	{
-		//http://localhost:8585/auth/signup
+		//http://localhost:8585/task_tracker/auth/signup
 		authEndpoints.POST("/signup", h.SignUp)
-		//http://localhost:8585/auth/signin
+		//http://localhost:8585/task_tracker/auth/signin
 		authEndpoints.POST("/signin", h.SignIn)
 
 	}

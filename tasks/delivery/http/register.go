@@ -6,17 +6,17 @@ import (
 )
 
 // RegisterHTTPEndpoints ...
-func RegisterHTTPEndpoints(router *gin.Engine, ucTasks tasks.TasksUC, middlewares ...gin.HandlerFunc) {
+func RegisterHTTPEndpoints(router *gin.RouterGroup, ucTasks tasks.TasksUC, middlewares ...gin.HandlerFunc) {
 	h := NewHandler(ucTasks)
 
 	tasksEndpoints := router.Group("/tasks")
 	tasksEndpoints.Use(middlewares...)
 	{
-		//http://localhost:8585/tasks
+		//http://localhost:8585/task_tracker/tasks
 		tasksEndpoints.POST("", h.CreateTask)
-		//http://localhost:8585/tasks?user_id=1
+		//http://localhost:8585/task_tracker/tasks?user_id=1
 		tasksEndpoints.GET("", h.GetTasksList)
-		//http://localhost:8585/tasks/update
+		//http://localhost:8585/task_tracker/tasks/update
 		tasksEndpoints.POST("/update", h.UpdateTask)
 	}
 

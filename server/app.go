@@ -72,15 +72,18 @@ func NewApp() *App {
 func (a *App) Run(port string) error {
 	defer a.closeDB()
 
-	router := gin.Default()
-	router.Use(
-		gin.Recovery(),
-		gin.Logger(),
-	)
+	router := gin.New()
+	if viper.GetBool("app.release") {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		router.Use(gin.Logger())
+	}
+	router.Use(gin.Recovery())
+	apiRouter := router.Group("/task_tracker")
 
-	authHttp.RegisterHTTPEndpoints(router, a.authUC)
+	authHttp.RegisterHTTPEndpoints(apiRouter, a.authUC)
 	authHttpMiddleware := authHttp.NewAuthMiddleware(a.authUC)
-	tasksHttp.RegisterHTTPEndpoints(router, a.tasksUC, authHttpMiddleware)
+	tasksHttp.RegisterHTTPEndpoints(apiRouter, a.tasksUC, authHttpMiddleware)
 
 	a.httpServer = &http.Server{
 		Addr:           ":" + port,
