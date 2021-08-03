@@ -18,12 +18,19 @@ func NewHandler(ucAuth auth.AuthUC) *Handler {
 //SignUp ...
 func (h *Handler) SignUp(ctx *gin.Context) {
 	var (
-		user  loginUser
-		mUser models.User
-		err   error
+		user    loginUser
+		mUser   models.User
+		outUser inpUser
+		err     error
 	)
 
 	err = ctx.BindJSON(&user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		return
+	}
+
+	err = h.validateLogInData(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return
@@ -34,8 +41,13 @@ func (h *Handler) SignUp(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
 		return
 	}
-
-	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: h.toInpUser(mUser)})
+	outUser = h.toInpUser(mUser)
+	outUser.Token, err = h.ucAuth.GenerateToken(&mUser)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: outUser})
 }
 
 //SignIn ...
@@ -48,6 +60,12 @@ func (h *Handler) SignIn(ctx *gin.Context) {
 	)
 
 	err = ctx.BindJSON(&user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		return
+	}
+
+	err = h.validateLogInData(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return
