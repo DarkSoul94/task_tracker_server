@@ -20,7 +20,7 @@ type inpGroup struct {
 
 type loginUser struct {
 	UserName string `json:"user_name"`
-	Password []byte `json:"password"`
+	Password string `json:"password"`
 }
 
 type inpUser struct {

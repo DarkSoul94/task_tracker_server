@@ -5,7 +5,7 @@ import "github.com/DarkSoul94/task_tracker_server/models"
 func (h *Handler) toModelLoginUser(inpUser loginUser) *models.LoginUser {
 	return &models.LoginUser{
 		Name:     inpUser.UserName,
-		Password: inpUser.Password,
+		Password: []byte(inpUser.Password),
 	}
 }
 
