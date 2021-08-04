@@ -23,6 +23,7 @@ func (r *Repo) CreateTask(task models.Task) error {
 		name = :name,
 		description = :description,
 		create_time = :create_time,
+		in_work_time = :in_work_time,
 		author_id = :author_id,
 		status_id = :status_id`
 	_, err := r.db.NamedExec(query, dbTask)

@@ -20,9 +20,6 @@ func (u *LoginUser) VerifyPass(PassHash string) bool {
 	bytePassHash := []byte(PassHash)
 
 	err := bcrypt.CompareHashAndPassword(bytePassHash, u.Password)
-	if err != nil {
-		return false
-	}
 
-	return true
+	return err == nil
 }
