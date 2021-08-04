@@ -12,7 +12,7 @@ func NewUsecase(repo user_manager.UserManagerRepo) *Usecase {
 	}
 }
 
-func (u *Usecase) GetGroupByID(groupID uint64) (*models.Group, error) {
+func (u *Usecase) GetGroupByID(groupID uint64) (models.Group, error) {
 	return u.repo.GetGroupByID(groupID)
 }
 
@@ -22,4 +22,9 @@ func (u *Usecase) CreateUser(userName, passHash string) (models.User, error) {
 
 func (u *Usecase) GetUserByName(userName string) (models.User, error) {
 	return u.repo.GetUserByName(userName)
+}
+
+func (u *Usecase) PermissionsCheck(group models.Group, targetActions ...string) map[string]interface{} {
+	result := make(map[string]interface{})
+	return result
 }

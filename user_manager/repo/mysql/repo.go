@@ -15,18 +15,17 @@ func NewRepo(db *sql.DB) *Repo {
 	}
 }
 
-func (r *Repo) GetGroupByID(groupID uint64) (*models.Group, error) {
+func (r *Repo) GetGroupByID(groupID uint64) (models.Group, error) {
 	var (
 		group dbGroup
 		query string
 		err   error
 	)
-
 	query = `SELECT * FROM user_groups WHERE id = ?`
 	err = r.db.Get(&group, query, groupID)
 	if err != nil {
-		logger.LogError(ErrReadGroup.Error(), "task_tracker_server/repo/mysql", strconv.FormatUint(groupID, 10), err)
-		return nil, ErrReadGroup
+		logger.LogError(ErrReadGroup.Error(), "user_manager/repo/mysql", strconv.FormatUint(groupID, 10), err)
+		return models.Group{}, ErrReadGroup
 	}
 
 	return r.toModelGroup(group), nil
@@ -56,7 +55,8 @@ func (r *Repo) CreateUser(userName, passHash string) (models.User, error) {
 	r.db.Get(&dbUser, query, userName)
 
 	mUser := r.toModelUser(dbUser)
-	mUser.Group, err = r.GetGroupByID(dbUser.GroupID)
+	group, err := r.GetGroupByID(dbUser.GroupID)
+	mUser.Group = &group
 	if err != nil {
 		return models.User{}, err
 	}
@@ -79,7 +79,8 @@ func (r *Repo) GetUserByName(name string) (models.User, error) {
 	}
 
 	mUser := r.toModelUser(dbUser)
-	mUser.Group, err = r.GetGroupByID(dbUser.GroupID)
+	group, err := r.GetGroupByID(dbUser.GroupID)
+	mUser.Group = &group
 	if err != nil {
 		return models.User{}, err
 	}

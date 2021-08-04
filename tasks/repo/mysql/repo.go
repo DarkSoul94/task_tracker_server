@@ -35,6 +35,11 @@ func (r *Repo) CreateTask(task models.Task) error {
 	return nil
 }
 
+func (r *Repo) GetTasksList(key string, user models.User) ([]models.Task, error) {
+
+	return nil, nil
+}
+
 func (r *Repo) Close() error {
 	r.db.Close()
 	return nil

@@ -2,7 +2,6 @@ package http
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/tasks"
@@ -41,14 +40,14 @@ func (h *Handler) CreateTask(ctx *gin.Context) {
 
 //GetTasksList ...
 func (h *Handler) GetTasksList(ctx *gin.Context) {
-	var tasksList []models.Task
+	var (
+		tasksList []models.Task
+		err       error
+	)
 
-	userID, err := strconv.ParseUint(ctx.Request.URL.Query().Get("user_id"), 10, 64)
-	if err != nil {
-		userID = 0
-	}
+	user, _ := ctx.Get("user")
 
-	tasksList, err = h.ucTasks.GetTasksList(userID)
+	tasksList, err = h.ucTasks.GetTasksList(user.(models.User))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return

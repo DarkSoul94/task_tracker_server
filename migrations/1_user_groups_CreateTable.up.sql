@@ -1,18 +1,23 @@
 
 CREATE TABLE IF NOT EXISTS `user_groups` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `group_name` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `permissions` JSON NOT NULL,
   PRIMARY KEY `pk_id`(`id`)
 );
 
 INSERT INTO `user_groups` SET
-group_name = "Regular user";
+`name` = "Regular user",
+`permissions` = "{}";
 
 INSERT INTO `user_groups` SET
-group_name = "Admin";
+`name` = "Admin",
+`permissions` = '{\"user\": [\"group_update\", \"user_update\"]}';
 
 INSERT INTO `user_groups` SET
-group_name = "PM";
+`name` = "PM",
+`permissions` = "{}";
 
 INSERT INTO `user_groups` SET
-group_name = "Developer";
+`name` = "Developer",
+`permissions` = "{}";

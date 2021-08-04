@@ -7,8 +7,9 @@ type Repo struct {
 }
 
 type dbGroup struct {
-	ID   uint64 `db:"id"`
-	Name string `db:"group_name"`
+	ID          uint64 `db:"id"`
+	Name        string `db:"name"`
+	Permissions []byte `db:"permissions"`
 }
 
 type dbLoginUser struct {

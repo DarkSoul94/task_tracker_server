@@ -11,8 +11,9 @@ func (h *Handler) toModelLoginUser(inpUser loginUser) *models.LoginUser {
 
 func (h *Handler) toInpGroup(group *models.Group) *inpGroup {
 	return &inpGroup{
-		ID:   group.ID,
-		Name: group.Name,
+		ID:          group.ID,
+		Name:        group.Name,
+		Permissions: group.Permissions,
 	}
 }
 

@@ -32,6 +32,18 @@ func (u *Usecase) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (u *Usecase) GetTasksList(userID uint64) ([]models.Task, error) {
-	return []models.Task{}, nil
+func (u *Usecase) GetTasksList(user models.User) ([]models.Task, error) {
+	var (
+		key      string
+		err      error
+		//group    models.Group
+		taskList []models.Task
+	)
+	//group, err = u.userManager.GetGroupByID(user.Group.ID)
+
+	taskList, err = u.repo.GetTasksList(key, user)
+	if err != nil {
+		return []models.Task{}, ErrFailedGetTasksList
+	}
+	return taskList, nil
 }
