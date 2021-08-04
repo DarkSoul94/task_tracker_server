@@ -42,5 +42,7 @@ var TaskStatusMap map[string]TaskStatus = map[string]TaskStatus{
 }
 
 func (ts *TaskStatus) Set(key string) {
-	*ts = TaskStatusMap[key]
+	var temp TaskStatus = TaskStatus{}
+	temp = TaskStatusMap[key]
+	*ts = temp
 }

@@ -14,9 +14,8 @@ type Task struct {
 }
 
 func (t *Task) FillNewTask() {
-	temp := TaskStatus{}
-	temp.Set(KeyTSNew)
-	t.Status = &temp
+	t.Status = &TaskStatus{}
+	t.Status.Set(KeyTSNew)
 	t.CreateDate = time.Now().Truncate(time.Second)
 	t.InWorkTime = 0
 }
