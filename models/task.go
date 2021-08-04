@@ -12,3 +12,11 @@ type Task struct {
 	Developer   *User
 	Status      *TaskStatus
 }
+
+func (t *Task) FillNewTask() {
+	temp := TaskStatus{}
+	temp.Set(KeyTSNew)
+	t.Status = &temp
+	t.CreateDate = time.Now().Truncate(time.Second)
+	t.InWorkTime = 0
+}

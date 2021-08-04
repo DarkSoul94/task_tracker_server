@@ -1,8 +1,6 @@
 package tasksUC
 
 import (
-	"time"
-
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/tasks"
 	"github.com/DarkSoul94/task_tracker_server/user_manager"
@@ -24,11 +22,9 @@ func NewUsecase(repo tasks.TasksRepo, userManager user_manager.UserManagerUC) *U
 
 func (u *Usecase) CreateTask(task models.Task) error {
 	var err error
-	task.CreateDate = time.Now().Truncate(time.Second)
-	task.InWorkTime = 0
-	task.Status = &models.TaskStatus{
-		ID: 1, //TODO get status from DB
-	}
+
+	task.FillNewTask()
+
 	err = u.repo.CreateTask(task)
 	if err != nil {
 		return ErrFailedCreateTask
