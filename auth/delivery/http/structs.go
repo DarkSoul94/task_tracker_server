@@ -23,6 +23,35 @@ type loginUser struct {
 	Password string `json:"password"`
 }
 
+//ValidateData проверяет авторизационные данные пользователя на соответствие установленным правилам.
+func (l *loginUser) ValidateData() error {
+	if !l.validateUserName() {
+		return ErrUserNameRequirements
+	}
+	if !l.validatePassword() {
+		return ErrPassRequirements
+	}
+	return nil
+}
+
+func (l *loginUser) validateUserName() bool {
+	for _, val := range userNameReq {
+		if !val(&l.UserName) {
+			return false
+		}
+	}
+	return true
+}
+
+func (l *loginUser) validatePassword() bool {
+	for _, val := range passwordReq {
+		if !val(&l.Password) {
+			return false
+		}
+	}
+	return true
+}
+
 type inpUser struct {
 	ID    uint64    `json:"user_id,omitempty"`
 	Name  string    `json:"user_name,omitempty"`

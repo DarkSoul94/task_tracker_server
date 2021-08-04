@@ -30,7 +30,7 @@ func (h *Handler) SignUp(ctx *gin.Context) {
 		return
 	}
 
-	err = h.validateLogInData(&user)
+	err = user.ValidateData()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return
@@ -60,12 +60,6 @@ func (h *Handler) SignIn(ctx *gin.Context) {
 	)
 
 	err = ctx.BindJSON(&user)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
-		return
-	}
-
-	err = h.validateLogInData(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return

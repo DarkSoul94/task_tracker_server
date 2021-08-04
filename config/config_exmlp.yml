@@ -4,6 +4,14 @@ app:
     secret_key: ""
     signing_key: ""
     ttl: 1
+    requirements:
+      min_length:
+        password: 8
+        username: 1
+      number_of:
+        upper_case: 1
+        lower_case: 1
+        digits: 1
   log:
     dir: "logs"
     file: "app.log"
