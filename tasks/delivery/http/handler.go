@@ -18,7 +18,25 @@ func NewHandler(ucTasks tasks.TasksUC) *Handler {
 
 //CreateTask ...
 func (h *Handler) CreateTask(ctx *gin.Context) {
+	var (
+		task newTask
+		err  error
+	)
+	user, _ := ctx.Get("user")
 
+	err = ctx.BindJSON(&task)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		return
+	}
+	mTask := h.toNewModelTask(task, user.(*models.User))
+
+	err = h.ucTasks.CreateTask(mTask)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: nil})
 }
 
 //GetTasksList ...

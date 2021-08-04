@@ -1,24 +1,23 @@
 package mysql
 
-import "github.com/jmoiron/sqlx"
+import (
+	"database/sql"
+	"time"
+
+	"github.com/jmoiron/sqlx"
+)
 
 type Repo struct {
 	db *sqlx.DB
 }
 
-type dbGroup struct {
-	ID   uint64 `db:"id"`
-	Name string `db:"group_name"`
-}
-
-type dbLoginUser struct {
-	Name     string `db:"name"`
-	PassHash string `db:"pass_hash"`
-}
-
-type dbUser struct {
-	ID       uint64 `db:"id"`
-	Name     string `db:"name"`
-	PassHash string `db:"pass_hash"`
-	GroupID  uint64 `db:"group_id"`
+type dbTask struct {
+	ID          uint64        `db:"id"`
+	Name        string        `db:"name"`
+	Description string        `db:"description"`
+	CreateDate  time.Time     `db:"create_time"`
+	InWorkTime  time.Duration `db:"in_work_time"`
+	AuthorID    uint64        `db:"author_id"`
+	Developer   sql.NullInt64 `db:"developer"`
+	StatusID    uint64        `db:"status_id"`
 }

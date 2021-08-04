@@ -12,3 +12,8 @@ type Responce struct {
 	Error  string      `json:"error,omitempty"`
 	Data   interface{} `json:"data,omitempty"`
 }
+
+type newTask struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}

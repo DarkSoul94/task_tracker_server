@@ -78,15 +78,3 @@ func (h *Handler) SignIn(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: outUser})
 }
-
-func (h *Handler) validateLogInData(user *loginUser) error {
-
-	if len(user.UserName) == 0 {
-		return ErrUserNameIsBlank
-	}
-
-	if len(user.Password) == 0 {
-		return ErrPassIsBlank
-	}
-	return nil
-}
