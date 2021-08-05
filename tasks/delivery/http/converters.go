@@ -10,3 +10,11 @@ func (h *Handler) toNewModelTask(task newTask, user *models.User) models.Task {
 	}
 	return mTask
 }
+
+func (h *Handler) toOutTask(mTask models.Task) outTask {
+	return outTask{
+		ID:          mTask.ID,
+		Name:        mTask.Name,
+		Description: mTask.Description,
+	}
+}

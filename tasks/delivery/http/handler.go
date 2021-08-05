@@ -52,7 +52,11 @@ func (h *Handler) GetTasksList(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: tasksList}) //TODO add Data to response (convert tasks list to handler type)
+	outList := make([]outTask, 0)
+	for _, val := range tasksList {
+		outList = append(outList, h.toOutTask(val))
+	}
+	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: outList}) //TODO add Data to response (convert tasks list to handler type)
 
 }
 
