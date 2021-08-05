@@ -32,18 +32,27 @@ func (u *Usecase) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (u *Usecase) GetTasksList(user models.User) ([]models.Task, error) {
+func (u *Usecase) GetTasksList(user *models.User) ([]models.Task, error) {
 	var (
-		key      string
 		err      error
-		//group    models.Group
+		group    models.Group
 		taskList []models.Task
 	)
-	//group, err = u.userManager.GetGroupByID(user.Group.ID)
 
-	taskList, err = u.repo.GetTasksList(key, user)
+	actions := make(map[string]interface{})
+	group, err = u.userManager.GetGroupByID(user.Group.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	actions = u.userManager.PermissionsCheck(group, tasks.KeyGetTasks)
+	if err != nil {
+		return nil, err
+	}
+	taskList, err = u.repo.GetTasksList(actions[tasks.KeyGetTasks].(string), *user)
 	if err != nil {
 		return []models.Task{}, ErrFailedGetTasksList
 	}
+
 	return taskList, nil
 }

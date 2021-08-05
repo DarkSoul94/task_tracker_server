@@ -47,7 +47,7 @@ func (h *Handler) GetTasksList(ctx *gin.Context) {
 
 	user, _ := ctx.Get("user")
 
-	tasksList, err = h.ucTasks.GetTasksList(user.(models.User))
+	tasksList, err = h.ucTasks.GetTasksList(user.(*models.User))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
 		return

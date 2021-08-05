@@ -26,5 +26,8 @@ func (u *Usecase) GetUserByName(userName string) (models.User, error) {
 
 func (u *Usecase) PermissionsCheck(group models.Group, targetActions ...string) map[string]interface{} {
 	result := make(map[string]interface{})
+	for _, key := range targetActions {
+		result[key] = permissionsChecksMap[key](group)
+	}
 	return result
 }

@@ -6,4 +6,6 @@ type UserManagerUC interface {
 	GetGroupByID(groupID uint64) (models.Group, error)
 	CreateUser(userName, passHash string) (models.User, error)
 	GetUserByName(userName string) (models.User, error)
+
+	PermissionsCheck(group models.Group, targetActions ...string) map[string]interface{}
 }
