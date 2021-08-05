@@ -24,3 +24,27 @@ func (r *Repo) toDBTask(task models.Task) dbTask {
 	}
 	return dbTask
 }
+
+func (r *Repo) toModelTask(dbTask dbTask) models.Task {
+	var mTask models.Task
+	mTask = models.Task{
+		ID:          dbTask.ID,
+		Name:        dbTask.Name,
+		Description: dbTask.Description,
+		CreateDate:  dbTask.CreateDate,
+		InWorkTime:  dbTask.InWorkTime,
+		Author: &models.User{
+			ID: dbTask.AuthorID,
+		},
+		Status: &models.TaskStatus{
+			ID: dbTask.StatusID,
+		},
+	}
+	if dbTask.Developer.Valid {
+		mTask.Developer = &models.User{
+			ID: uint64(dbTask.Developer.Int64),
+		}
+	}
+
+	return mTask
+}

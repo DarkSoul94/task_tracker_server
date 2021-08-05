@@ -43,6 +43,7 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]models.Task, error)
 
 	args := make([]interface{}, 0)
 	dbTasks := make([]dbTask, 0)
+	mTasks := make([]models.Task, 0)
 
 	switch key {
 	case tasks.TargetAction_GetAllTasks:
@@ -64,8 +65,12 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]models.Task, error)
 		logger.LogError("Failed get tasks list from db", "task/repo/mysql", "", err)
 		return nil, err
 	}
-	fmt.Println(dbTasks)
-	return nil, nil
+	if len(dbTasks) != 0 {
+		for _, val := range dbTasks {
+			mTasks = append(mTasks, r.toModelTask(val))
+		}
+	}
+	return mTasks, nil
 }
 
 func (r *Repo) Close() error {
