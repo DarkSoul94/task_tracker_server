@@ -46,20 +46,28 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]models.Task, error)
 	mTasks := make([]models.Task, 0)
 
 	switch key {
-	case tasks.TargetAction_GetAllTasks:
+	case tasks.KeyGet_All:
 		query = `
 			SELECT * FROM tasks`
-	case tasks.TargetAction_GetTaskByAuthor:
+	case tasks.KeyGet_Author:
 		query = `
 			SELECT * FROM tasks
 			WHERE author_id = ?`
-		args = append(args, user.ID)
-	case tasks.TargetAction_GetTaskByDev:
+		args = []interface{}{user.ID}
+	case tasks.KeyGet_Dev:
 		query = `
 			SELECT * FROM tasks
 			WHERE developer = ?`
-		args = append(args, user.ID)
+		args = []interface{}{user.ID}
+	case tasks.KeyGet_AuthorDev:
+		query = `
+		SELECT * FROM tasks
+		WHERE developer = ?
+		OR author_id = ?`
+		args = []interface{}{user.ID, user.ID}
+
 	}
+
 	err := r.db.Select(&dbTasks, query, args...)
 	if err != nil {
 		logger.LogError("Failed get tasks list from db", "task/repo/mysql", "", err)

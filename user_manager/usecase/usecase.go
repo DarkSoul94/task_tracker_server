@@ -23,12 +23,3 @@ func (u *Usecase) CreateUser(userName, passHash string) (models.User, error) {
 func (u *Usecase) GetUserByName(userName string) (models.User, error) {
 	return u.repo.GetUserByName(userName)
 }
-
-func (u *Usecase) PermissionsCheck(group models.Group, targetActions ...string) map[string]interface{} {
-	result := make(map[string]interface{})
-	//TODO пересмотреть работу с доступами и целевыми действиями. Отойти от интерфейсов для сохранения строгой типизации
-	for _, key := range targetActions {
-		result[key] = permissionsChecksMap[key](group)
-	}
-	return result
-}

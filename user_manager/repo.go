@@ -6,5 +6,6 @@ type UserManagerRepo interface {
 	GetGroupByID(groupID uint64) (models.Group, error)
 	CreateUser(userName, passHash string) (models.User, error)
 	GetUserByName(name string) (models.User, error)
+
 	Close() error
 }

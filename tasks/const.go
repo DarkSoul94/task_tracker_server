@@ -1,8 +1,12 @@
 package tasks
 
 const (
-	KeyGetTasks                  string = "get_tasks_list"
-	TargetAction_GetAllTasks     string = "get_all"
-	TargetAction_GetTaskByAuthor string = "get_by_author"
-	TargetAction_GetTaskByDev    string = "get_by_dev"
+	KeyCreate string = "task.create"
+	KeyUpdate string = "task.update"
+
+	KeyGet           string = "task.get"
+	KeyGet_All       string = "task.get.all"
+	KeyGet_Author    string = "task.get.author"
+	KeyGet_Dev       string = "task.get.dev"
+	KeyGet_AuthorDev string = "task.get.author_dev"
 )

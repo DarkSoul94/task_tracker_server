@@ -8,29 +8,29 @@ type Group struct {
 
 const (
 	//ключи для группы прав "Task"
-	PermGroupTasks         string = "task"
-	PermGetAllTasks        string = "get_all_tasks"
-	PermGetTasksWhereAutor string = "get_tasks_where_author"
-	PermGetTasksWhereDev   string = "get_tasks_where_developer"
-	PermCreateTask         string = "create_task"
-	PermRemoveTask         string = "remove_task"
+	TasksGet_All     string = "task.get.all"
+	TasksGet_ByAutor string = "task.get.by_author"
+	TasksGet_ByDev   string = "task.get.by_developer"
+	TasksCreate      string = "task.create"
 
 	//ключи для группы прав "User"
-	PermGroupUser string = "user"
-	PermUpdGroup  string = "upd_group"
-	PermUpdUser   string = "upd_user"
+	UserUpdate string = "user.update"
+
+	//ключи для группы прав "Group"
+	GroupUpdate string = "group.update"
+	GroupCreate string = "group.create"
 )
 
-var AllPermissionsList map[string][]string = map[string][]string{
-	PermGroupTasks: {
-		PermGetAllTasks,
-		PermGetTasksWhereAutor,
-		PermGetTasksWhereDev,
-		PermCreateTask,
-		PermRemoveTask,
-	},
-	PermGroupUser: {
-		PermUpdGroup,
-		PermUpdUser,
-	},
+var AllPermissionsList []string = []string{
+	TasksGet_All,
+	TasksGet_ByAutor,
+	TasksGet_ByDev,
+	TasksCreate,
+	UserUpdate,
+	GroupUpdate,
+	GroupCreate,
+}
+
+func (g *Group) ParsePermissionsByGroups(groups ...string) {
+
 }
