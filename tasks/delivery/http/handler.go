@@ -3,6 +3,7 @@ package http
 import (
 	"net/http"
 
+	"github.com/DarkSoul94/task_tracker_server/global_const"
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/tasks"
 	"github.com/gin-gonic/gin"
@@ -25,17 +26,17 @@ func (h *Handler) CreateTask(ctx *gin.Context) {
 
 	err = ctx.BindJSON(&task)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
 	mTask := h.toNewModelTask(task, user.(*models.User))
 
 	err = h.ucTasks.CreateTask(mTask)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: nil})
+	ctx.JSON(http.StatusOK, Responce{Status: global_const.ResponseStatusSuccess, Data: nil})
 }
 
 //GetTasksList ...
@@ -45,18 +46,18 @@ func (h *Handler) GetTasksList(ctx *gin.Context) {
 		err       error
 	)
 
-	user, _ := ctx.Get("user")
+	user, _ := ctx.Get(global_const.CtxUserKey)
 
 	tasksList, err = h.ucTasks.GetTasksList(user.(*models.User))
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
 	outList := make([]outTask, 0)
 	for _, val := range tasksList {
 		outList = append(outList, h.toOutTask(val))
 	}
-	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: outList}) //TODO add Data to response (convert tasks list to handler type)
+	ctx.JSON(http.StatusOK, Responce{Status: global_const.ResponseStatusSuccess, Data: outList}) //TODO add Data to response (convert tasks list to handler type)
 
 }
 

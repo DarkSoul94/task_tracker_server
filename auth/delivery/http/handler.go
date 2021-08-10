@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/DarkSoul94/task_tracker_server/auth"
+	"github.com/DarkSoul94/task_tracker_server/global_const"
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/gin-gonic/gin"
 )
@@ -26,28 +27,28 @@ func (h *Handler) SignUp(ctx *gin.Context) {
 
 	err = ctx.BindJSON(&user)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
 
 	err = user.ValidateData()
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
 
 	mUser, err = h.ucAuth.SignUp(h.toModelLoginUser(user))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
 	outUser = h.toInpUser(mUser)
 	outUser.Token, err = h.ucAuth.GenerateToken(&mUser)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: outUser})
+	ctx.JSON(http.StatusOK, Responce{Status: global_const.ResponseStatusSuccess, Data: outUser})
 }
 
 //SignIn ...
@@ -61,20 +62,20 @@ func (h *Handler) SignIn(ctx *gin.Context) {
 
 	err = ctx.BindJSON(&user)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
 
 	mUser, err = h.ucAuth.SignIn(h.toModelLoginUser(user))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
 	outUser = h.toInpUser(mUser)
 	outUser.Token, err = h.ucAuth.GenerateToken(&mUser)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: StatusError, Error: err.Error()})
+		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, Responce{Status: StatusSuccess, Data: outUser})
+	ctx.JSON(http.StatusOK, Responce{Status: global_const.ResponseStatusSuccess, Data: outUser})
 }

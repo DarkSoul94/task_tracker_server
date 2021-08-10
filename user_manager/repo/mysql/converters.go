@@ -30,9 +30,16 @@ func (r *Repo) toDbLoginUser(name, passHash string) dbLoginUser {
 }
 
 func (r *Repo) toModelUser(dbUser dbUser) models.User {
+	var group models.Group
+	if dbUser.GroupID != 0 {
+		group = models.Group{ID: dbUser.GroupID}
+	} else {
+		group = models.Group{}
+	}
 	return models.User{
 		ID:       dbUser.ID,
 		Name:     dbUser.Name,
 		PassHash: dbUser.PassHash,
+		Group:    &group,
 	}
 }

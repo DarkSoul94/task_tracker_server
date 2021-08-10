@@ -3,33 +3,58 @@ package usecase
 import (
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/tasks"
+	"github.com/DarkSoul94/task_tracker_server/user_manager"
 )
 
 var (
-	checksList map[string]func(models.Group) string = map[string]func(models.Group) string{
-		tasks.KeyGet: getTasks,
+	checksList map[string]func(map[string][]string) string = map[string]func(map[string][]string) string{
+		tasks.KeyGet:           getTasks,
+		user_manager.KeyGet:    getUsersList,
+		user_manager.KeyUpdate: updateUser,
 	}
 )
 
-func (u *Usecase) TargetActionPermissionCheck(user models.User, actions ...string) (map[string]string, error) {
-	var (
-		group models.Group
-		err   error
-	)
-	result := make(map[string]string)
-
-	group, err = u.repo.GetGroupByID(user.Group.ID)
-	if err != nil {
-		return nil, err
+func getTasks(permissions map[string][]string) string {
+	if contains(permissions[tasks.KeyGet], models.TasksGet_All) {
+		return tasks.KeyGet_All
 	}
-
-	for _, val := range actions {
-		result[val] = checksList[val](group)
+	if contains(permissions[tasks.KeyGet], models.TasksGet_ByAutor, models.TasksGet_ByDev) {
+		return tasks.KeyGet_AuthorDev
 	}
-	return result, nil
+	if contains(permissions[tasks.KeyGet], models.TasksGet_ByAutor) {
+		return tasks.KeyGet_Author
+	}
+	if contains(permissions[tasks.KeyGet], models.TasksGet_ByDev) {
+		return tasks.KeyGet_Dev
+	}
+	return ""
 }
 
-func getTasks(group models.Group) string {
+func getUsersList(permissions map[string][]string) string {
+	if !contains(permissions[user_manager.KeyGet], models.UserGet) {
+		return ""
+	}
+	return user_manager.KeyGet
+}
 
-	return ""
+func updateUser(permissions map[string][]string) string {
+	if !contains(permissions[user_manager.KeyUpdate], models.UserUpdate) {
+		return ""
+	}
+	return user_manager.KeyUpdate
+}
+
+func contains(slice []string, targets ...string) (result bool) {
+	temp := make([]string, 0)
+	for _, val := range slice {
+		for _, target := range targets {
+			if target == val {
+				temp = append(temp, target)
+			}
+		}
+	}
+	if len(temp) == len(targets) {
+		result = true
+	}
+	return result
 }

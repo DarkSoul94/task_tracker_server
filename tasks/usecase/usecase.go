@@ -34,15 +34,16 @@ func (u *Usecase) CreateTask(task models.Task) error {
 
 func (u *Usecase) GetTasksList(user *models.User) ([]models.Task, error) {
 	var (
-		err      error
 		taskList []models.Task
+		actions  map[string]string
+		err      error
 	)
 
-	actions := make(map[string]string)
+	if actions, err = u.userManager.TargetActionPermissionCheck(user, tasks.KeyGet); err != nil {
+		return []models.Task{}, err
+	}
 
-	//TODO добавить поверку доступов
-	taskList, err = u.repo.GetTasksList(actions[tasks.KeyGet], *user)
-	if err != nil {
+	if taskList, err = u.repo.GetTasksList(actions[tasks.KeyGet], *user); err != nil {
 		return []models.Task{}, ErrFailedGetTasksList
 	}
 

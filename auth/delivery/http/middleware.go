@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/DarkSoul94/task_tracker_server/auth"
+	"github.com/DarkSoul94/task_tracker_server/global_const"
 	"github.com/gin-gonic/gin"
 )
 
@@ -49,5 +50,5 @@ func (m *AuthMiddleware) Handle(c *gin.Context) {
 		return
 	}
 
-	c.Set(CtxUserKey, user)
+	c.Set(global_const.CtxUserKey, user)
 }

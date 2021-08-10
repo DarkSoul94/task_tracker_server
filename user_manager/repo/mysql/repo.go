@@ -15,22 +15,6 @@ func NewRepo(db *sql.DB) *Repo {
 	}
 }
 
-func (r *Repo) GetGroupByID(groupID uint64) (models.Group, error) {
-	var (
-		group dbGroup
-		query string
-		err   error
-	)
-	query = `SELECT * FROM user_groups WHERE id = ?`
-	err = r.db.Get(&group, query, groupID)
-	if err != nil {
-		logger.LogError(ErrReadGroup.Error(), "user_manager/repo/mysql", strconv.FormatUint(groupID, 10), err)
-		return models.Group{}, ErrReadGroup
-	}
-
-	return r.toModelGroup(group), nil
-}
-
 func (r *Repo) CreateUser(userName, passHash string) (models.User, error) {
 	var (
 		dbLoginUser dbLoginUser
@@ -86,6 +70,61 @@ func (r *Repo) GetUserByName(name string) (models.User, error) {
 	}
 
 	return mUser, nil
+}
+
+func (r *Repo) GetUsersList() ([]models.User, error) {
+	var (
+		dbUsersList []dbUser
+		err         error
+	)
+	query := `SELECT * FROM users`
+
+	if err = r.db.Select(&dbUsersList, query); err != nil {
+		logger.LogError(ErrReadUsersList.Error(), "user_manager/repo/mysql", "", err)
+		return []models.User{}, ErrReadUsersList
+	}
+
+	mUsersList := make([]models.User, 0)
+	for _, val := range dbUsersList {
+		mUsersList = append(mUsersList, r.toModelUser(val))
+	}
+	return mUsersList, nil
+}
+
+func (r *Repo) GetGroupByID(groupID uint64) (models.Group, error) {
+	var (
+		group dbGroup
+		query string
+		err   error
+	)
+	query = `SELECT * FROM user_groups WHERE id = ?`
+	err = r.db.Get(&group, query, groupID)
+	if err != nil {
+		logger.LogError(ErrReadGroup.Error(), "user_manager/repo/mysql", strconv.FormatUint(groupID, 10), err)
+		return models.Group{}, ErrReadGroup
+	}
+
+	return r.toModelGroup(group), nil
+}
+
+func (r *Repo) GetGroupList() ([]models.Group, error) {
+	var (
+		dbGroupsList []dbGroup
+		err          error
+	)
+	query := `SELECT * FROM user_groups`
+
+	if err = r.db.Select(&dbGroupsList, query); err != nil {
+		logger.LogError(ErrReadGroupsList.Error(), "user_manager/repo/mysql", "", err)
+		return []models.Group{}, ErrReadGroupsList
+	}
+
+	mGroupsList := make([]models.Group, 0)
+	for _, val := range dbGroupsList {
+		mGroupsList = append(mGroupsList, r.toModelGroup(val))
+	}
+	return mGroupsList, nil
+
 }
 
 func (r *Repo) Close() error {
