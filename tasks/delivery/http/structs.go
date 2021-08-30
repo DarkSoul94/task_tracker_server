@@ -25,7 +25,30 @@ type newTask struct {
 }
 
 type outTask struct {
-	ID          uint64 `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	ID           uint64      `json:"id"`
+	Name         string      `json:"name"`
+	Description  string      `json:"description"`
+	CreationDate string      `json:"creation_date"`
+	Author       *userInTask `json:"author"`
+	Developer    *userInTask `json:"developer"`
+	Customer     *userInTask `json:"customer"`
+	Category     *hCategory  `json:"category"`
+	Project      *hProject   `json:"project"`
+	Priority     bool        `json:"priority"`
+	ExecOrder    uint64      `json:"exec_order"`
+}
+
+type hCategory struct {
+	ID   uint64 `json:"id"`
+	Name string `json:"name"`
+}
+
+type hProject struct {
+	ID   uint64 `json:"id"`
+	Name string `json:"name"`
+}
+
+type userInTask struct {
+	ID   uint64 `json:"id"`
+	Name string `json:"name"`
 }

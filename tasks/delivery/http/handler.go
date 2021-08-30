@@ -42,7 +42,7 @@ func (h *Handler) CreateTask(ctx *gin.Context) {
 //GetTasksList ...
 func (h *Handler) GetTasksList(ctx *gin.Context) {
 	var (
-		tasksList []models.Task
+		tasksList []*models.Task
 		err       error
 	)
 
@@ -57,7 +57,7 @@ func (h *Handler) GetTasksList(ctx *gin.Context) {
 	for _, val := range tasksList {
 		outList = append(outList, h.toOutTask(val))
 	}
-	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outList}) //TODO add Data to  (convert tasks list to handler type)
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outList})
 
 }
 

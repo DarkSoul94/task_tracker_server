@@ -8,14 +8,14 @@ import (
 
 func (r *Repo) toDBTask(task models.Task) dbTask {
 	dbTask := dbTask{
-		ID:          task.ID,
-		Name:        task.Name,
-		Description: task.Description,
-		CreateDate:  task.CreateDate,
-		InWorkTime:  task.InWorkTime,
-		CategoryID:  task.Category.ID,
-		AuthorID:    task.Author.ID,
-		StatusID:    task.Status.ID,
+		ID:           task.ID,
+		Name:         task.Name,
+		Description:  task.Description,
+		CreationDate: task.CreationDate,
+		InWorkTime:   task.InWorkTime,
+		CategoryID:   task.Category.ID,
+		AuthorID:     task.Author.ID,
+		StatusID:     task.Status.ID,
 	}
 	if task.Developer != nil {
 		dbTask.DeveloperID = sql.NullInt64{
@@ -39,14 +39,14 @@ func (r *Repo) toDBTask(task models.Task) dbTask {
 	return dbTask
 }
 
-func (r *Repo) toModelTask(dbTask dbTask) models.Task {
+func (r *Repo) toModelTask(dbTask dbTask) *models.Task {
 	var ts models.TaskStatus
 	mTask := models.Task{
-		ID:          dbTask.ID,
-		Name:        dbTask.Name,
-		Description: dbTask.Description,
-		CreateDate:  dbTask.CreateDate,
-		InWorkTime:  dbTask.InWorkTime,
+		ID:           dbTask.ID,
+		Name:         dbTask.Name,
+		Description:  dbTask.Description,
+		CreationDate: dbTask.CreationDate,
+		InWorkTime:   dbTask.InWorkTime,
 		Author: &models.User{
 			ID: dbTask.AuthorID,
 		},
@@ -78,5 +78,19 @@ func (r *Repo) toModelTask(dbTask dbTask) models.Task {
 		}
 	}
 
-	return mTask
+	return &mTask
+}
+
+func (r *Repo) toModelCategory(dbCat dbCategory) *models.Category {
+	return &models.Category{
+		ID:   dbCat.ID,
+		Name: dbCat.Name,
+	}
+}
+
+func (r *Repo) toModelProject(dbPr dbProject) *models.Project {
+	return &models.Project{
+		ID:   dbPr.ID,
+		Name: dbPr.Name,
+	}
 }
