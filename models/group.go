@@ -13,6 +13,9 @@ type Group struct {
 }
 
 const (
+	//ключи для стандартных групп пользователей
+	RegularUserID = 1
+
 	//ключи для группы прав "Task"
 	TasksGet_All     string = "task.get.all"
 	TasksGet_ByAutor string = "task.get.author"

@@ -7,7 +7,7 @@ type Handler struct {
 	ucAuth auth.AuthUC
 }
 
-type Responce struct {
+type Response struct {
 	Status string      `json:"status"`
 	Error  string      `json:"error,omitempty"`
 	Data   interface{} `json:"data"`
@@ -20,7 +20,7 @@ type inpGroup struct {
 }
 
 type loginUser struct {
-	UserName string `json:"user_name"`
+	UserName string `json:"username"`
 	Password string `json:"password"`
 }
 

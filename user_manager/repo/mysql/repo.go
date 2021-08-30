@@ -15,54 +15,57 @@ func NewRepo(db *sql.DB) *Repo {
 	}
 }
 
-func (r *Repo) CreateUser(userName, passHash string) (models.User, error) {
+func (r *Repo) CreateUser(user *models.User) (uint64, error) {
 	var (
-		dbLoginUser dbLoginUser
-		dbUser      dbUser
-		query       string
-		err         error
+		dbUser dbUser
+		query  string
+		err    error
 	)
-
-	dbLoginUser = r.toDbLoginUser(userName, passHash)
-
-	query = `INSERT INTO users SET
-	name = :name,
-	pass_hash = :pass_hash`
-
-	_, err = r.db.NamedExec(query, dbLoginUser)
-	if err != nil {
-		logger.LogError(ErrCreateUser.Error(), "task_trecker_server/repo/mysql", "", err)
-		return models.User{}, ErrCreateUser
+	dbUser = r.toDBUser(user)
+	if dbUser.ID == 0 {
+		query = `
+			INSERT INTO users SET
+				name = :name,
+				email = :email,
+				department = :department
+				ON DUPLICATE KEY UPDATE 
+				name = :name,
+				department = :department`
+	} else {
+		query = `
+			UPDATE users SET
+				name = :name,
+				department = :department
+			WHERE id = :id`
 	}
-
-	query = `SELECT * FROM users WHERE name = ?`
-	r.db.Get(&dbUser, query, userName)
-
-	mUser := r.toModelUser(dbUser)
-	group, err := r.GetGroupByID(dbUser.GroupID)
-	mUser.Group = &group
+	res, err := r.db.NamedExec(query, &dbUser)
 	if err != nil {
-		return models.User{}, err
+		logger.LogError(ErrCreateUser.Error(), "user_manager/repo/mysql", dbUser.Email, err)
+		return 0, err
 	}
+	lastID, _ := res.LastInsertId()
+	if user.ID == 0 {
+		user.ID = uint64(lastID)
+	}
+	return uint64(lastID), nil
 
-	return mUser, nil
 }
 
-func (r *Repo) GetUserByName(name string) (models.User, error) {
+func (r *Repo) GetUserByEmail(email string) (models.User, error) {
 	var (
 		dbUser dbUser
 		query  string
 		err    error
 	)
 
-	query = `SELECT * FROM users WHERE name = ?`
-	err = r.db.Get(&dbUser, query, name)
+	query = `SELECT * FROM users WHERE email = ?`
+	err = r.db.Get(&dbUser, query, email)
 	if err != nil {
-		logger.LogError(ErrReadUser.Error(), "task_tracker_server/repo/mysql", name, err)
+		logger.LogError(ErrReadUser.Error(), "user_manager/repo/mysql", email, err)
 		return models.User{}, ErrReadUser
 	}
 
-	mUser := r.toModelUser(dbUser)
+	mUser := r.toModelUser(&dbUser)
 	group, err := r.GetGroupByID(dbUser.GroupID)
 	mUser.Group = &group
 	if err != nil {
@@ -86,7 +89,7 @@ func (r *Repo) GetUsersList() ([]models.User, error) {
 
 	mUsersList := make([]models.User, 0)
 	for _, val := range dbUsersList {
-		mUsersList = append(mUsersList, r.toModelUser(val))
+		mUsersList = append(mUsersList, r.toModelUser(&val))
 	}
 	return mUsersList, nil
 }

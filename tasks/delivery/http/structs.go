@@ -7,7 +7,7 @@ type Handler struct {
 	ucTasks tasks.TasksUC
 }
 
-type Responce struct {
+type Response struct {
 	Status string      `json:"status"`
 	Error  string      `json:"error,omitempty"`
 	Data   interface{} `json:"data,omitempty"`

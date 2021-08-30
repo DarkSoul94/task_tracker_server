@@ -16,66 +16,27 @@ func NewHandler(ucAuth auth.AuthUC) *Handler {
 	}
 }
 
-//SignUp ...
-func (h *Handler) SignUp(ctx *gin.Context) {
-	var (
-		user    loginUser
-		mUser   models.User
-		outUser inpUser
-		err     error
-	)
-
-	err = ctx.BindJSON(&user)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
-		return
-	}
-
-	err = user.ValidateData()
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
-		return
-	}
-
-	mUser, err = h.ucAuth.SignUp(h.toModelLoginUser(user))
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
-		return
-	}
-	outUser = h.toInpUser(mUser)
-	outUser.Token, err = h.ucAuth.GenerateToken(&mUser)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
-		return
-	}
-	ctx.JSON(http.StatusOK, Responce{Status: global_const.ResponseStatusSuccess, Data: outUser})
-}
-
 //SignIn ...
 func (h *Handler) SignIn(ctx *gin.Context) {
 	var (
 		user    loginUser
 		mUser   models.User
 		outUser inpUser
+		token   string
 		err     error
 	)
 
 	err = ctx.BindJSON(&user)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
 		return
 	}
 
-	mUser, err = h.ucAuth.SignIn(h.toModelLoginUser(user))
+	mUser, token, err = h.ucAuth.LDAPSignIn(user.UserName, user.Password)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
+		ctx.JSON(http.StatusInternalServerError, Response{Status: global_const.StatusError, Error: err.Error()})
 		return
 	}
-	outUser = h.toInpUser(mUser)
-	outUser.Token, err = h.ucAuth.GenerateToken(&mUser)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
-		return
-	}
-	ctx.JSON(http.StatusOK, Responce{Status: global_const.ResponseStatusSuccess, Data: outUser})
+	outUser = h.toInpUser(mUser, token)
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outUser})
 }

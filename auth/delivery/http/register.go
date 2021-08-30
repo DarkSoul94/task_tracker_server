@@ -11,8 +11,6 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, ucAuth auth.AuthUC) {
 
 	authEndpoints := router.Group("/auth")
 	{
-		//http://localhost:8585/task_tracker/auth/signup
-		authEndpoints.POST("/signup", h.SignUp)
 		//http://localhost:8585/task_tracker/auth/signin
 		authEndpoints.POST("/signin", h.SignIn)
 

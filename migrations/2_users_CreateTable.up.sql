@@ -1,9 +1,10 @@
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL UNIQUE,
-  `pass_hash` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `name` VARCHAR(255) NOT NULL,
   `group_id` INT UNSIGNED DEFAULT(1),
+  `department` VARCHAR(255) DEFAULT(""),
   PRIMARY KEY `pk_id`(`id`),
   CONSTRAINT FOREIGN KEY (`group_id`) REFERENCES `user_groups`(`id`)
 );

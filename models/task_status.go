@@ -7,11 +7,13 @@ type TaskStatus struct {
 
 const (
 	KeyTSNew       string = "новая"
-	KeyTSRevision  string = "доработка"
+	KeyTSQuery     string = "очередь"
 	KeyTSInWork    string = "работа"
-	KeyTSPostponed string = "отложена"
-	KeyTSCompleted string = "выполнена"
+	KeyTSPaused    string = "приостановлена"
+	KeyTSWaiting   string = "ожидание"
 	KeyTSRejected  string = "отклонена"
+	KeyTSTesting   string = "тестирование"
+	KeyTSCompleted string = "выполнена"
 )
 
 var TaskStatusMap map[string]TaskStatus = map[string]TaskStatus{
@@ -19,25 +21,33 @@ var TaskStatusMap map[string]TaskStatus = map[string]TaskStatus{
 		ID:   1,
 		Name: "Новая",
 	},
-	KeyTSRevision: {
+	KeyTSQuery: {
 		ID:   2,
-		Name: "В доработке",
+		Name: "Очередь к реализации",
 	},
 	KeyTSInWork: {
 		ID:   3,
 		Name: "В работе",
 	},
-	KeyTSPostponed: {
+	KeyTSPaused: {
 		ID:   4,
-		Name: "Отложена",
+		Name: "Приостановлена",
 	},
-	KeyTSCompleted: {
+	KeyTSWaiting: {
 		ID:   5,
-		Name: "Выполнена",
+		Name: "Ожидание",
 	},
 	KeyTSRejected: {
 		ID:   6,
 		Name: "Отклонена",
+	},
+	KeyTSTesting: {
+		ID:   7,
+		Name: "Готово к тестированию",
+	},
+	KeyTSCompleted: {
+		ID:   8,
+		Name: "Выполнено",
 	},
 }
 

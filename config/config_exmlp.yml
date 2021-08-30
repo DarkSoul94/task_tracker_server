@@ -12,6 +12,10 @@ app:
         upper_case: 1
         lower_case: 1
         digits: 1
+    ldap:
+      server: "localhost:389"
+      filterDN: "(&(objectClass=person)(|(sAMAccountName={username})(mail={username})))"
+      baseDN: "OU={},DC={},DC={}"
   log:
     dir: "logs"
     file: "app.log"

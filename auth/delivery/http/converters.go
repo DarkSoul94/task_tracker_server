@@ -2,13 +2,6 @@ package http
 
 import "github.com/DarkSoul94/task_tracker_server/models"
 
-func (h *Handler) toModelLoginUser(inpUser loginUser) *models.LoginUser {
-	return &models.LoginUser{
-		Name:     inpUser.UserName,
-		Password: []byte(inpUser.Password),
-	}
-}
-
 func (h *Handler) toInpGroup(group *models.Group) *inpGroup {
 	return &inpGroup{
 		ID:          group.ID,
@@ -17,10 +10,11 @@ func (h *Handler) toInpGroup(group *models.Group) *inpGroup {
 	}
 }
 
-func (h *Handler) toInpUser(user models.User) inpUser {
+func (h *Handler) toInpUser(user models.User, token string) inpUser {
 	return inpUser{
 		ID:    user.ID,
 		Name:  user.Name,
+		Token: token,
 		Group: h.toInpGroup(user.Group),
 	}
 }

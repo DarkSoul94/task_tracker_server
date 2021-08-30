@@ -9,6 +9,7 @@ import (
 	"github.com/DarkSoul94/task_tracker_server/pkg/logger"
 	"github.com/DarkSoul94/task_tracker_server/user_manager"
 	"github.com/dgrijalva/jwt-go/v4"
+	"github.com/spf13/viper"
 )
 
 // Usecase ...
@@ -38,35 +39,41 @@ func NewUsecase(
 	}
 }
 
-func (u *Usecase) SignUp(user *models.LoginUser) (models.User, error) {
+func (u *Usecase) LDAPSignIn(email, password string) (models.User, string, error) {
 	var (
-		hash string
-		err  error
+		user  models.User
+		token string
 	)
-	hash, err = user.GetPassHash()
-	if err != nil {
-		return models.User{}, err
+	lUser, ok := u.ldapAuthenticate(email, password)
+	if !ok {
+		return models.User{}, "", ErrLoginFailed
 	}
 
-	return u.userManager.CreateUser(user.Name, hash)
-}
-
-func (u *Usecase) SignIn(inpUser *models.LoginUser) (models.User, error) {
-	var (
-		user models.User
-		err  error
-	)
-
-	user, err = u.userManager.GetUserByName(inpUser.Name)
+	user, err := u.userManager.GetUserByEmail(email)
 	if err != nil {
-		return models.User{}, err
-	}
 
-	if inpUser.VerifyPass(user.PassHash) {
-		return user, nil
+		user = models.User{
+			Email:      email,
+			Name:       lUser.Name,
+			Department: lUser.Department,
+		}
+		u.userManager.CreateUser(&user)
+		user, err = u.userManager.GetUserByEmail(email)
+		if err != nil {
+			return models.User{}, "", err
+		}
 	} else {
-		return models.User{}, ErrLoginFailed
+		if user.Name != lUser.Name || user.Department != lUser.Department {
+			user.Name = lUser.Name
+			user.Department = lUser.Department
+			u.userManager.CreateUser(&user)
+		}
 	}
+	token, err = u.GenerateToken(&user)
+	if err != nil {
+		return models.User{}, "", err
+	}
+	return user, token, nil
 }
 
 func (u *Usecase) GenerateToken(user *models.User) (string, error) {
@@ -109,4 +116,17 @@ func (u *Usecase) ParseToken(ctx context.Context, accessToken string) (*models.U
 	}
 
 	return nil, nil
+}
+
+func (u *Usecase) ldapAuthenticate(email, password string) (ldapUser, bool) {
+	ldap := NewLdapAuthenticator(
+		viper.GetString("app.auth.ldap.server"),
+		viper.GetString("app.auth.ldap.baseDN"),
+		viper.GetString("app.auth.ldap.filterDN"),
+	)
+	user, err := ldap.Auth(email, password)
+	if err != nil {
+		return user, false
+	}
+	return user, true
 }

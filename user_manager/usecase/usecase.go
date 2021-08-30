@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"fmt"
-
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/user_manager"
 )
@@ -14,12 +12,12 @@ func NewUsecase(repo user_manager.UserManagerRepo) *Usecase {
 	}
 }
 
-func (u *Usecase) CreateUser(userName, passHash string) (models.User, error) {
-	return u.repo.CreateUser(userName, passHash)
+func (u *Usecase) CreateUser(user *models.User) (uint64, error) {
+	return u.repo.CreateUser(user)
 }
 
-func (u *Usecase) GetUserByName(userName string) (models.User, error) {
-	return u.repo.GetUserByName(userName)
+func (u *Usecase) GetUserByEmail(email string) (models.User, error) {
+	return u.repo.GetUserByEmail(email)
 }
 
 func (u *Usecase) GetUsersList(user *models.User) ([]models.User, error) {
@@ -69,7 +67,6 @@ func (u *Usecase) TargetActionPermissionCheck(user *models.User, actions ...stri
 	permissions := group.ParsePermissionsByAction(actions...)
 	for _, val := range actions {
 		action := checksList[val](permissions)
-		fmt.Println(action)
 		if len(action) == 0 {
 			return nil, ErrUnauthorized
 		}

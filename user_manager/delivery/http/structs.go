@@ -9,7 +9,7 @@ type Handler struct {
 	ucUserManager user_manager.UserManagerUC
 }
 
-type Responce struct {
+type Response struct {
 	Status string      `json:"status"`
 	Error  string      `json:"error"`
 	Data   interface{} `json:"data"`

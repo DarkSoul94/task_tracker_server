@@ -12,14 +12,10 @@ type dbGroup struct {
 	Permissions []byte `db:"permissions"`
 }
 
-type dbLoginUser struct {
-	Name     string `db:"name"`
-	PassHash string `db:"pass_hash"`
-}
-
 type dbUser struct {
-	ID       uint64 `db:"id"`
-	Name     string `db:"name"`
-	PassHash string `db:"pass_hash"`
-	GroupID  uint64 `db:"group_id"`
+	ID         uint64 `db:"id"`
+	Email      string `db:"email"`
+	Name       string `db:"name"`
+	GroupID    uint64 `db:"group_id"`
+	Department string `db:"department"`
 }

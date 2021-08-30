@@ -6,6 +6,7 @@ require (
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/gin-gonic/gin v1.7.1
+	github.com/go-ldap/ldap v3.0.3+incompatible
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/golang-migrate/migrate/v4 v4.14.1
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -25,6 +26,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
 	golang.org/x/sys v0.0.0-20210514084401-e8d321eab015 // indirect
 	golang.org/x/text v0.3.6 // indirect
+	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

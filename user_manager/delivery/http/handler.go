@@ -29,14 +29,14 @@ func (h *Handler) GetUsersList(ctx *gin.Context) {
 
 	user, _ := ctx.Get(global_const.CtxUserKey)
 	if userList, err = h.ucUserManager.GetUsersList(user.(*models.User)); err != nil {
-		ctx.JSON(http.StatusBadRequest, Responce{Status: global_const.ResponseStatusError, Error: err.Error()})
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
 		return
 	}
 	for _, user := range userList {
 		outUsers = append(outUsers, h.toOutUser(user))
 	}
 
-	ctx.JSON(http.StatusOK, Responce{Status: global_const.ResponseStatusSuccess, Data: outUsers})
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outUsers})
 }
 
 func (h *Handler) CreateGroup(ctx *gin.Context) {
