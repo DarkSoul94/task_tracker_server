@@ -13,12 +13,26 @@ func (r *Repo) toDBTask(task models.Task) dbTask {
 		Description: task.Description,
 		CreateDate:  task.CreateDate,
 		InWorkTime:  task.InWorkTime,
+		CategoryID:  task.Category.ID,
 		AuthorID:    task.Author.ID,
 		StatusID:    task.Status.ID,
 	}
 	if task.Developer != nil {
-		dbTask.Developer = sql.NullInt64{
+		dbTask.DeveloperID = sql.NullInt64{
 			Int64: int64(task.Developer.ID),
+			Valid: true,
+		}
+	}
+	if task.Customer != nil {
+		dbTask.CustomerID = sql.NullInt64{
+			Int64: int64(task.Customer.ID),
+			Valid: true,
+		}
+	}
+
+	if task.Project != nil {
+		dbTask.ProjectID = sql.NullInt64{
+			Int64: int64(task.Project.ID),
 			Valid: true,
 		}
 	}
@@ -26,8 +40,8 @@ func (r *Repo) toDBTask(task models.Task) dbTask {
 }
 
 func (r *Repo) toModelTask(dbTask dbTask) models.Task {
-	var mTask models.Task
-	mTask = models.Task{
+	var ts models.TaskStatus
+	mTask := models.Task{
 		ID:          dbTask.ID,
 		Name:        dbTask.Name,
 		Description: dbTask.Description,
@@ -36,13 +50,31 @@ func (r *Repo) toModelTask(dbTask dbTask) models.Task {
 		Author: &models.User{
 			ID: dbTask.AuthorID,
 		},
-		Status: &models.TaskStatus{
-			ID: dbTask.StatusID,
+		Category: &models.Category{
+			ID: dbTask.CategoryID,
 		},
+		Priority:  dbTask.Priority,
+		ExecOrder: dbTask.ExecOrder,
 	}
-	if dbTask.Developer.Valid {
+
+	ts.SetByID(dbTask.StatusID)
+	mTask.Status = &ts
+
+	if dbTask.DeveloperID.Valid {
 		mTask.Developer = &models.User{
-			ID: uint64(dbTask.Developer.Int64),
+			ID: uint64(dbTask.DeveloperID.Int64),
+		}
+	}
+
+	if dbTask.CustomerID.Valid {
+		mTask.Customer = &models.User{
+			ID: uint64(dbTask.CustomerID.Int64),
+		}
+	}
+
+	if dbTask.ProjectID.Valid {
+		mTask.Project = &models.Project{
+			ID: uint64(dbTask.ProjectID.Int64),
 		}
 	}
 

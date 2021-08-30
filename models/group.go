@@ -17,10 +17,11 @@ const (
 	RegularUserID = 1
 
 	//ключи для группы прав "Task"
-	TasksGet_All     string = "task.get.all"
-	TasksGet_ByAutor string = "task.get.author"
-	TasksGet_ByDev   string = "task.get.developer"
-	TasksCreate      string = "task.create"
+	TasksGet_All        string = "task.get.all"
+	TasksGet_ByAutor    string = "task.get.author"
+	TasksGet_ByDev      string = "task.get.developer"
+	TasksGet_ByCustomer string = "task.get.customer"
+	TasksCreate         string = "task.create"
 
 	//ключи для группы прав "User"
 	UserUpdate string = "user.update"
@@ -54,7 +55,6 @@ func (g *Group) ParsePermissionsByAction(actions ...string) map[string][]string 
 		subKeys := strings.Split(key, ".")
 
 		format := g.prepActionKeyToRegExp(subKeys)
-		fmt.Println(format)
 		re := regexp.MustCompile(format)
 		for _, val := range g.Permissions[subKeys[0]] {
 			if re.MatchString(val) {

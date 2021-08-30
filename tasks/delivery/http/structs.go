@@ -16,6 +16,12 @@ type Response struct {
 type newTask struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
+	CategoryID  uint64 `json:"category_id"`
+	ProjectID   uint64 `json:"project_id,omitempty"`
+	DeveloperID uint64 `json:"developer_id,omitempty"`
+	Priority    bool   `json:"priority,omitempty"`
+	CustomerID  uint64 `json:"customer_id,omitempty"`
+	ExecOrder   uint64 `json:"exec_order,omitempty"`
 }
 
 type outTask struct {

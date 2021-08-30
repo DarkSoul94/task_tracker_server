@@ -1,0 +1,6 @@
+
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY `pk_id`(`id`)
+);

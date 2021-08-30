@@ -23,10 +23,16 @@ func (r *Repo) CreateTask(task models.Task) error {
 		id = :id,
 		name = :name,
 		description = :description,
-		create_time = :create_time,
+		creation_date = :creation_date,
 		in_work_time = :in_work_time,
 		author_id = :author_id,
-		status_id = :status_id`
+		developer_id = :developer_id,
+		customer_id = :customer_id,
+		status_id = :status_id,
+		category_id = :category_id,
+		project_id = :project_id,
+		priority = :priority,
+		exec_order = :exec_order`
 	_, err := r.db.NamedExec(query, dbTask)
 	if err != nil {
 		errData := fmt.Sprintf("task author: %d %s", task.Author.ID, task.Author.Name)
@@ -57,14 +63,19 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]models.Task, error)
 	case tasks.KeyGet_Dev:
 		query = `
 			SELECT * FROM tasks
-			WHERE developer = ?`
+			WHERE developer_id = ?`
 		args = []interface{}{user.ID}
 	case tasks.KeyGet_AuthorDev:
 		query = `
 		SELECT * FROM tasks
-		WHERE developer = ?
+		WHERE developer_id = ?
 		OR author_id = ?`
 		args = []interface{}{user.ID, user.ID}
+	case tasks.KeyGet_Customer:
+		query = `
+		SELECT * FROM tasks
+		WHERE customer_id = ?`
+		args = []interface{}{user.ID}
 
 	}
 

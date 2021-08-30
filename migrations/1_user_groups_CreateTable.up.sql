@@ -12,7 +12,9 @@ INSERT INTO `user_groups` SET
 
 INSERT INTO `user_groups` SET
 `name` = "Admin",
-`permissions` = '{\"user\": [\"group_update\", \"user_update\"]}';
+`permissions` = '{
+\"user\": [\"user.update\", \"user.get\"],
+\"task\": [\"task.create\", \"task.get.all\"]}';
 
 INSERT INTO `user_groups` SET
 `name` = "PM",

@@ -56,3 +56,14 @@ func (ts *TaskStatus) Set(key string) {
 	temp = TaskStatusMap[key]
 	*ts = temp
 }
+
+func (ts *TaskStatus) SetByID(id uint64) {
+	var temp TaskStatus = TaskStatus{}
+	for key, val := range TaskStatusMap {
+		if val.ID == id {
+			temp.Set(key)
+			*ts = temp
+			return
+		}
+	}
+}
