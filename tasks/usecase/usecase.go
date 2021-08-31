@@ -101,6 +101,9 @@ func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
 func (u *Usecase) fillTask(task *models.Task) error {
 	var (
 		cat *models.Category

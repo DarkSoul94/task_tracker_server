@@ -107,7 +107,7 @@ func (r *Repo) GetTask(taskID uint64) (models.Task, error) {
 		return models.Task{}, ErrTaskNotExist
 	}
 
-	return r.toModelTask(task), nil
+	return *r.toModelTask(task), nil
 }
 
 func (r *Repo) InsertTaskTrack(tackTrack models.TaskTrack) error {
@@ -166,6 +166,8 @@ func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error)
 	mTrack = r.toModelTaskTrack(dbTrack)
 
 	return mTrack, nil
+}
+
 func (r *Repo) GetCategoryByID(id uint64) (*models.Category, error) {
 	var (
 		mCat  *models.Category
