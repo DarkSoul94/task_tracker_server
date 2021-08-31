@@ -49,6 +49,8 @@ func (h *Handler) toOutTask(mTask *models.Task) outTask {
 			ID:   mTask.Category.ID,
 			Name: mTask.Category.Name,
 		},
+		Priority:  mTask.Priority,
+		ExecOrder: mTask.ExecOrder,
 	}
 
 	if mTask.Developer != nil {

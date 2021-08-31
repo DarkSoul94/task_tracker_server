@@ -24,7 +24,6 @@ func (u *Usecase) CreateTask(task models.Task) error {
 	var err error
 
 	task.FillNewTask()
-
 	err = u.repo.CreateTask(task)
 	if err != nil {
 		return ErrFailedCreateTask

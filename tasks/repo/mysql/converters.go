@@ -16,6 +16,8 @@ func (r *Repo) toDBTask(task models.Task) dbTask {
 		CategoryID:   task.Category.ID,
 		AuthorID:     task.Author.ID,
 		StatusID:     task.Status.ID,
+		Priority:     task.Priority,
+		ExecOrder:    task.ExecOrder,
 	}
 	if task.Developer != nil {
 		dbTask.DeveloperID = sql.NullInt64{
