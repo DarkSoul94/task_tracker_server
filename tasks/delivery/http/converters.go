@@ -35,10 +35,42 @@ func (h *Handler) toNewModelTask(task newTask, user *models.User) models.Task {
 	return mTask
 }
 
-func (h *Handler) toOutTask(mTask models.Task) outTask {
-	return outTask{
-		ID:          mTask.ID,
-		Name:        mTask.Name,
-		Description: mTask.Description,
+func (h *Handler) toOutTask(mTask *models.Task) outTask {
+	out := outTask{
+		ID:           mTask.ID,
+		Name:         mTask.Name,
+		Description:  mTask.Description,
+		CreationDate: mTask.CreationDate.Local().String(),
+		Author: &userInTask{
+			ID:   mTask.Author.ID,
+			Name: mTask.Author.Name,
+		},
+		Category: &hCategory{
+			ID:   mTask.Category.ID,
+			Name: mTask.Category.Name,
+		},
 	}
+
+	if mTask.Developer != nil {
+		out.Developer = &userInTask{
+			ID:   mTask.Developer.ID,
+			Name: mTask.Developer.Name,
+		}
+	}
+
+	if mTask.Customer != nil {
+		out.Customer = &userInTask{
+			ID:   mTask.Customer.ID,
+			Name: mTask.Customer.Name,
+		}
+	}
+
+	if mTask.Project != nil {
+		out.Project = &hProject{
+			ID:   mTask.Project.ID,
+			Name: mTask.Project.Name,
+		}
+	}
+
+	return out
 }

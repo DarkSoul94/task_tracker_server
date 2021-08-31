@@ -43,14 +43,14 @@ func (r *Repo) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (r *Repo) GetTasksList(key string, user models.User) ([]models.Task, error) {
+func (r *Repo) GetTasksList(key string, user models.User) ([]*models.Task, error) {
 	var (
 		query string
 	)
 
 	args := make([]interface{}, 0)
 	dbTasks := make([]dbTask, 0)
-	mTasks := make([]models.Task, 0)
+	mTasks := make([]*models.Task, 0)
 
 	switch key {
 	case tasks.KeyGet_All:
@@ -166,6 +166,40 @@ func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error)
 	mTrack = r.toModelTaskTrack(dbTrack)
 
 	return mTrack, nil
+func (r *Repo) GetCategoryByID(id uint64) (*models.Category, error) {
+	var (
+		mCat  *models.Category
+		dbCat dbCategory
+		err   error
+	)
+	err = r.db.Get(&dbCat, `
+		SELECT * FROM categories
+		WHERE id = ?
+		`, id)
+	if err != nil {
+		logger.LogError("Failed get category from db", "task/repo/mysql", fmt.Sprintf("category id: %d", id), err)
+		return nil, err
+	}
+	mCat = r.toModelCategory(dbCat)
+	return mCat, nil
+}
+
+func (r *Repo) GetProjectByID(id uint64) (*models.Project, error) {
+	var (
+		mProject  *models.Project
+		dbProject dbProject
+		err       error
+	)
+	err = r.db.Get(&dbProject, `
+		SELECT * FROM projects
+		WHERE id = ?
+		`, id)
+	if err != nil {
+		logger.LogError("Failed get category from db", "task/repo/mysql", fmt.Sprintf("project id: %d", id), err)
+		return nil, err
+	}
+	mProject = r.toModelProject(dbProject)
+	return mProject, nil
 }
 
 func (r *Repo) Close() error {

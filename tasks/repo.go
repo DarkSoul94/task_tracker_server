@@ -10,5 +10,9 @@ type TasksRepo interface {
 	InsertTaskTrack(tackTrack models.TaskTrack) error
 	GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error)
 
+	GetCategoryByID(id uint64) (*models.Category, error)
+
+	GetProjectByID(id uint64) (*models.Project, error)
+
 	Close() error
 }

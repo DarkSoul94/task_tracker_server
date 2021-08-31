@@ -20,6 +20,10 @@ func (u *Usecase) GetUserByEmail(email string) (models.User, error) {
 	return u.repo.GetUserByEmail(email)
 }
 
+func (u *Usecase) GetUserByID(id uint64) (models.User, error) {
+	return u.repo.GetUserByID(id)
+}
+
 func (u *Usecase) GetUsersList(user *models.User) ([]models.User, error) {
 	var (
 		err       error

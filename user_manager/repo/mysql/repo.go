@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"database/sql"
+	"fmt"
 	"strconv"
 
 	"github.com/DarkSoul94/task_tracker_server/models"
@@ -62,6 +63,30 @@ func (r *Repo) GetUserByEmail(email string) (models.User, error) {
 	err = r.db.Get(&dbUser, query, email)
 	if err != nil {
 		logger.LogError(ErrReadUser.Error(), "user_manager/repo/mysql", email, err)
+		return models.User{}, ErrReadUser
+	}
+
+	mUser := r.toModelUser(&dbUser)
+	group, err := r.GetGroupByID(dbUser.GroupID)
+	mUser.Group = &group
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return mUser, nil
+}
+
+func (r *Repo) GetUserByID(id uint64) (models.User, error) {
+	var (
+		dbUser dbUser
+		query  string
+		err    error
+	)
+
+	query = `SELECT * FROM users WHERE id = ?`
+	err = r.db.Get(&dbUser, query, id)
+	if err != nil {
+		logger.LogError(ErrReadUser.Error(), "user_manager/repo/mysql", fmt.Sprintf("user id: %d", id), err)
 		return models.User{}, ErrReadUser
 	}
 
