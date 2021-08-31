@@ -49,3 +49,52 @@ func (u *Usecase) GetTasksList(user *models.User) ([]models.Task, error) {
 
 	return taskList, nil
 }
+
+func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error {
+	var (
+		task  models.Task
+		track models.TaskTrack
+		err   error
+	)
+
+	task, err = u.repo.GetTask(taskId)
+	if err != nil {
+		return err
+	}
+
+	if task.Developer == nil {
+		return ErrNotDeveloper
+	}
+
+	if task.Developer.ID != user.ID {
+		return ErrNotDeveloper
+	}
+
+	/*TODO: раскоментить когда будет апдейт таска с возможностью менять статус
+	if task.Status.ID != models.TaskStatusMap[models.KeyTSInWork].ID {
+		return ErrNotInWork
+	}*/
+
+	track, err = u.repo.GetLastTaskTrack(taskId, user.ID)
+	if status {
+		if err == nil {
+			if track.EndTime.IsZero() {
+				return ErrIsTracking
+			}
+		}
+
+		track.StartTrack(taskId, user)
+	} else {
+		if err != nil || !track.EndTime.IsZero() {
+			return ErrIsNotTracking
+		}
+		track.EndTrack()
+		//TODO: add track.difference to task.inworktime and update task
+	}
+	err = u.repo.InsertTaskTrack(track)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

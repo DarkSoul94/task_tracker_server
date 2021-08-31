@@ -18,6 +18,8 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, ucTasks tasks.TasksUC, middl
 		tasksEndpoints.GET("", h.GetTasksList)
 		//http://localhost:8585/task_tracker/tasks/update
 		tasksEndpoints.POST("/update", h.UpdateTask)
+		//http://localhost:8585/task_tracker/tasks/track
+		tasksEndpoints.POST("/track", h.TrackTask)
 	}
 
 }

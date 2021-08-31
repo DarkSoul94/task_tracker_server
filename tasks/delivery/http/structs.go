@@ -29,3 +29,8 @@ type outTask struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
+
+type Track struct {
+	TaskID uint64 `json:"task_id,omitempty"`
+	Status bool   `json:"status,omitempty"`
+}

@@ -3,6 +3,7 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/pkg/logger"
@@ -90,6 +91,81 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]models.Task, error)
 		}
 	}
 	return mTasks, nil
+}
+
+func (r *Repo) GetTask(taskID uint64) (models.Task, error) {
+	var (
+		task  dbTask
+		query string
+		err   error
+	)
+
+	query = `SELECT * FROM tasks WHERE id = ?`
+	err = r.db.Get(&task, query, taskID)
+	if err != nil {
+		logger.LogError("Failed read task from db", "tasks/repo/mysql", strconv.FormatUint(taskID, 10), err)
+		return models.Task{}, ErrTaskNotExist
+	}
+
+	return r.toModelTask(task), nil
+}
+
+func (r *Repo) InsertTaskTrack(tackTrack models.TaskTrack) error {
+	var (
+		dbTrack dbTaskTrack
+		query   string
+		err     error
+	)
+
+	dbTrack = r.toDbTaskTrack(tackTrack)
+
+	if dbTrack.ID == 0 {
+		query = `INSERT INTO task_track SET
+		task_id = :task_id,
+		user_id = :user_id,
+		start_time = :start_time,
+		end_time = :end_time,
+		difference = :difference`
+	} else {
+		query = `UPDATE task_track SET
+		task_id = :task_id,
+		user_id = :user_id,
+		start_time = :start_time,
+		end_time = :end_time,
+		difference = :difference
+		WHERE id = :id`
+	}
+
+	_, err = r.db.NamedExec(query, &dbTrack)
+	if err != nil {
+		trackString := fmt.Sprintf("task_id: %d, user_id: %d, start_time: %s", dbTrack.TaskID, dbTrack.UserID, dbTrack.StartTime)
+		logger.LogError(ErrFailedWriteTrack.Error(), "tasks/repo/mysql", trackString, err)
+		return ErrFailedWriteTrack
+	}
+
+	return nil
+}
+
+func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error) {
+	var (
+		dbTrack dbTaskTrack
+		mTrack  models.TaskTrack
+		query   string
+		err     error
+	)
+
+	query = `SELECT * FROM task_track WHERE
+	task_id = ? AND user_id = ?
+	ORDER BY id DESC LIMIT 1`
+	err = r.db.Get(&dbTrack, query, taskID, userID)
+	if err != nil {
+		logger.LogError(ErrFailedReadTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
+		return models.TaskTrack{}, ErrFailedReadTrack
+	}
+
+	mTrack = r.toModelTaskTrack(dbTrack)
+
+	return mTrack, nil
 }
 
 func (r *Repo) Close() error {

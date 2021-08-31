@@ -26,3 +26,12 @@ type dbTask struct {
 	Priority    bool          `db:"priority"`
 	ExecOrder   uint64        `db:"exec_order"`
 }
+
+type dbTaskTrack struct {
+	ID         uint64       `db:"id"`
+	TaskID     uint64       `db:"task_id"`
+	UserID     uint64       `db:"user_id"`
+	StartTime  time.Time    `db:"start_time"`
+	EndTime    sql.NullTime `db:"end_time"`
+	Difference uint64       `db:"difference"`
+}
