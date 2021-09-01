@@ -22,4 +22,11 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, ucTasks tasks.TasksUC, middl
 		tasksEndpoints.POST("/track", h.TrackTask)
 	}
 
+	categoryEndpoints := router.Group("/category")
+	categoryEndpoints.Use(middlewares...)
+	{
+		//http://localhost:8585/task_tracker/category/list
+		categoryEndpoints.GET("/list", h.GetCategoryList)
+	}
+
 }

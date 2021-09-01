@@ -88,3 +88,23 @@ func (h *Handler) TrackTask(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess})
 }
+
+func (h *Handler) GetCategoryList(ctx *gin.Context) {
+	var (
+		mCategories   []*models.Category
+		outCategories []hCategory
+		err           error
+	)
+
+	mCategories, err = h.ucTasks.GetCategoryList()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+
+	for _, cat := range mCategories {
+		outCategories = append(outCategories, h.toOutCategory(cat))
+	}
+
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outCategories})
+}

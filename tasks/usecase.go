@@ -7,4 +7,6 @@ type TasksUC interface {
 	GetTasksList(user *models.User) ([]*models.Task, error)
 
 	TrackTask(taskId uint64, user *models.User, status bool) error
+
+	GetCategoryList() ([]*models.Category, error)
 }

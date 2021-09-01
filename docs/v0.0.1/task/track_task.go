@@ -1,4 +1,4 @@
-package docs
+package task
 
 /**
  *
@@ -11,7 +11,7 @@ package docs
  * @apiHeader {String} BearerToken 	Авторизационный токен
  *
  * @apiParam  {Uint64} 	task_id 	Ид задачи
- * @apiParam  {Bool} 		status 		Признак начать или закончить трекать задачу
+ * @apiParam  {Bool} 	status 		Признак начать или закончить трекать задачу
  *
  * @apiSuccess (Success 200) {String} Status Статус выполнения запроса
  *

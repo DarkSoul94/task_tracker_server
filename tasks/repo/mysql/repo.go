@@ -93,7 +93,7 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]*models.Task, error
 	return mTasks, nil
 }
 
-func (r *Repo) GetTask(taskID uint64) (models.Task, error) {
+func (r *Repo) GetTask(taskID uint64) (*models.Task, error) {
 	var (
 		task  dbTask
 		query string
@@ -104,13 +104,13 @@ func (r *Repo) GetTask(taskID uint64) (models.Task, error) {
 	err = r.db.Get(&task, query, taskID)
 	if err != nil {
 		logger.LogError("Failed read task from db", "tasks/repo/mysql", strconv.FormatUint(taskID, 10), err)
-		return models.Task{}, ErrTaskNotExist
+		return nil, ErrTaskNotExist
 	}
 
-	return *r.toModelTask(task), nil
+	return r.toModelTask(task), nil
 }
 
-func (r *Repo) InsertTaskTrack(tackTrack models.TaskTrack) error {
+func (r *Repo) InsertTaskTrack(tackTrack *models.TaskTrack) error {
 	var (
 		dbTrack dbTaskTrack
 		query   string
@@ -139,17 +139,17 @@ func (r *Repo) InsertTaskTrack(tackTrack models.TaskTrack) error {
 	_, err = r.db.NamedExec(query, &dbTrack)
 	if err != nil {
 		trackString := fmt.Sprintf("task_id: %d, user_id: %d, start_time: %s", dbTrack.TaskID, dbTrack.UserID, dbTrack.StartTime)
-		logger.LogError(ErrFailedWriteTrack.Error(), "tasks/repo/mysql", trackString, err)
-		return ErrFailedWriteTrack
+		logger.LogError(ErrAddTrack.Error(), "tasks/repo/mysql", trackString, err)
+		return ErrAddTrack
 	}
 
 	return nil
 }
 
-func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error) {
+func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (*models.TaskTrack, error) {
 	var (
 		dbTrack dbTaskTrack
-		mTrack  models.TaskTrack
+		mTrack  *models.TaskTrack
 		query   string
 		err     error
 	)
@@ -159,8 +159,8 @@ func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error)
 	ORDER BY id DESC LIMIT 1`
 	err = r.db.Get(&dbTrack, query, taskID, userID)
 	if err != nil {
-		logger.LogError(ErrFailedReadTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
-		return models.TaskTrack{}, ErrFailedReadTrack
+		logger.LogError(ErrGetTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
+		return nil, ErrGetTrack
 	}
 
 	mTrack = r.toModelTaskTrack(dbTrack)
@@ -184,6 +184,28 @@ func (r *Repo) GetCategoryByID(id uint64) (*models.Category, error) {
 	}
 	mCat = r.toModelCategory(dbCat)
 	return mCat, nil
+}
+
+func (r *Repo) GetCategoryList() ([]*models.Category, error) {
+	var (
+		categories  []dbCategory
+		mCategories []*models.Category
+		query       string
+		err         error
+	)
+
+	query = `SELECT * FROM categories`
+	err = r.db.Select(&categories, query)
+	if err != nil {
+		logger.LogError(ErrGetCategoryList.Error(), "tasks/repo/mysql", "", err)
+		return nil, ErrGetCategoryList
+	}
+
+	for _, category := range categories {
+		mCategories = append(mCategories, r.toModelCategory(category))
+	}
+
+	return mCategories, nil
 }
 
 func (r *Repo) GetProjectByID(id uint64) (*models.Project, error) {
