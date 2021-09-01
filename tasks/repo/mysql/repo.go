@@ -93,7 +93,7 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]*models.Task, error
 	return mTasks, nil
 }
 
-func (r *Repo) GetTask(taskID uint64) (models.Task, error) {
+func (r *Repo) GetTask(taskID uint64) (*models.Task, error) {
 	var (
 		task  dbTask
 		query string
@@ -104,13 +104,13 @@ func (r *Repo) GetTask(taskID uint64) (models.Task, error) {
 	err = r.db.Get(&task, query, taskID)
 	if err != nil {
 		logger.LogError("Failed read task from db", "tasks/repo/mysql", strconv.FormatUint(taskID, 10), err)
-		return models.Task{}, ErrTaskNotExist
+		return nil, ErrTaskNotExist
 	}
 
-	return *r.toModelTask(task), nil
+	return r.toModelTask(task), nil
 }
 
-func (r *Repo) InsertTaskTrack(tackTrack models.TaskTrack) error {
+func (r *Repo) InsertTaskTrack(tackTrack *models.TaskTrack) error {
 	var (
 		dbTrack dbTaskTrack
 		query   string
@@ -146,10 +146,10 @@ func (r *Repo) InsertTaskTrack(tackTrack models.TaskTrack) error {
 	return nil
 }
 
-func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error) {
+func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (*models.TaskTrack, error) {
 	var (
 		dbTrack dbTaskTrack
-		mTrack  models.TaskTrack
+		mTrack  *models.TaskTrack
 		query   string
 		err     error
 	)
@@ -160,7 +160,7 @@ func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error)
 	err = r.db.Get(&dbTrack, query, taskID, userID)
 	if err != nil {
 		logger.LogError(ErrGetTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
-		return models.TaskTrack{}, ErrGetTrack
+		return nil, ErrGetTrack
 	}
 
 	mTrack = r.toModelTaskTrack(dbTrack)

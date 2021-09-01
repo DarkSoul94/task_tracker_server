@@ -57,8 +57,8 @@ func (u *Usecase) GetTasksList(user *models.User) ([]*models.Task, error) {
 
 func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error {
 	var (
-		task  models.Task
-		track models.TaskTrack
+		task  *models.Task
+		track *models.TaskTrack
 		err   error
 	)
 

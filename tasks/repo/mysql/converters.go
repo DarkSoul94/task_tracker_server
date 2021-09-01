@@ -97,7 +97,7 @@ func (r *Repo) toModelProject(dbPr dbProject) *models.Project {
 	}
 }
 
-func (r *Repo) toDbTaskTrack(track models.TaskTrack) dbTaskTrack {
+func (r *Repo) toDbTaskTrack(track *models.TaskTrack) dbTaskTrack {
 	dbTrack := dbTaskTrack{
 		ID:         track.ID,
 		TaskID:     track.TaskID,
@@ -116,8 +116,8 @@ func (r *Repo) toDbTaskTrack(track models.TaskTrack) dbTaskTrack {
 	return dbTrack
 }
 
-func (r *Repo) toModelTaskTrack(track dbTaskTrack) models.TaskTrack {
-	mTrack := models.TaskTrack{
+func (r *Repo) toModelTaskTrack(track dbTaskTrack) *models.TaskTrack {
+	mTrack := &models.TaskTrack{
 		ID:         track.ID,
 		TaskID:     track.TaskID,
 		Author:     &models.User{ID: track.UserID},
