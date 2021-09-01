@@ -10,7 +10,7 @@ package user
  *
  * @apiHeader {String} BearerToken 	Авторизационный токен
  *
- * @apiSuccess (200) {String} 		status 					Статус ответа
+ * @apiSuccess (200) {String} 		status 					Статус выполнения запроса
  * @apiSuccess (200) {[]User} 		data 					Данные(список пользователей)
  * @apiSuccess (200) {Uint64} 		data.id 				Ид пользователя
  * @apiSuccess (200) {String} 		data.name 				Имя пользователя

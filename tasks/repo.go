@@ -11,6 +11,7 @@ type TasksRepo interface {
 	GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error)
 
 	GetCategoryByID(id uint64) (*models.Category, error)
+	GetCategoryList() ([]*models.Category, error)
 
 	GetProjectByID(id uint64) (*models.Project, error)
 

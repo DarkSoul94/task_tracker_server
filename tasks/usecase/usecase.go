@@ -149,3 +149,7 @@ func (u *Usecase) fillTask(task *models.Task) error {
 
 	return nil
 }
+
+func (u *Usecase) GetCategoryList() ([]*models.Category, error) {
+	return u.repo.GetCategoryList()
+}

@@ -139,8 +139,8 @@ func (r *Repo) InsertTaskTrack(tackTrack models.TaskTrack) error {
 	_, err = r.db.NamedExec(query, &dbTrack)
 	if err != nil {
 		trackString := fmt.Sprintf("task_id: %d, user_id: %d, start_time: %s", dbTrack.TaskID, dbTrack.UserID, dbTrack.StartTime)
-		logger.LogError(ErrFailedWriteTrack.Error(), "tasks/repo/mysql", trackString, err)
-		return ErrFailedWriteTrack
+		logger.LogError(ErrAddTrack.Error(), "tasks/repo/mysql", trackString, err)
+		return ErrAddTrack
 	}
 
 	return nil
@@ -159,8 +159,8 @@ func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (models.TaskTrack, error)
 	ORDER BY id DESC LIMIT 1`
 	err = r.db.Get(&dbTrack, query, taskID, userID)
 	if err != nil {
-		logger.LogError(ErrFailedReadTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
-		return models.TaskTrack{}, ErrFailedReadTrack
+		logger.LogError(ErrGetTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
+		return models.TaskTrack{}, ErrGetTrack
 	}
 
 	mTrack = r.toModelTaskTrack(dbTrack)
@@ -184,6 +184,28 @@ func (r *Repo) GetCategoryByID(id uint64) (*models.Category, error) {
 	}
 	mCat = r.toModelCategory(dbCat)
 	return mCat, nil
+}
+
+func (r *Repo) GetCategoryList() ([]*models.Category, error) {
+	var (
+		categories  []dbCategory
+		mCategories []*models.Category
+		query       string
+		err         error
+	)
+
+	query = `SELECT * FROM categories`
+	err = r.db.Select(&categories, query)
+	if err != nil {
+		logger.LogError(ErrGetCategoryList.Error(), "tasks/repo/mysql", "", err)
+		return nil, ErrGetCategoryList
+	}
+
+	for _, category := range categories {
+		mCategories = append(mCategories, r.toModelCategory(category))
+	}
+
+	return mCategories, nil
 }
 
 func (r *Repo) GetProjectByID(id uint64) (*models.Project, error) {

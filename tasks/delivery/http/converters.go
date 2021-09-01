@@ -76,3 +76,10 @@ func (h *Handler) toOutTask(mTask *models.Task) outTask {
 
 	return out
 }
+
+func (h *Handler) toOutCategory(cat *models.Category) hCategory {
+	return hCategory{
+		ID:   cat.ID,
+		Name: cat.Name,
+	}
+}
