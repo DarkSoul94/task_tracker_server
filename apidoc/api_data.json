@@ -282,149 +282,191 @@
         "Success 200": [
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус ответа на запрос</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Data",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Объект с данными по запросу</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Uint64",
             "optional": false,
-            "field": "id",
+            "field": "data.id",
             "description": "<p>ИД задачи</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "name",
+            "field": "data.name",
             "description": "<p>Название задачи</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "description",
+            "field": "data.description",
             "description": "<p>Описание задачи</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "creation_date",
+            "field": "data.creation_date",
             "description": "<p>Дата создания задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.in_work_time",
+            "description": "<p>Время проведенное в работе в <code>секундах</code></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Status",
+            "optional": false,
+            "field": "data.status",
+            "description": "<p>Статус задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.status.id",
+            "description": "<p>ИД статуса</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.status.name",
+            "description": "<p>Название статус</p>"
           },
           {
             "group": "Success 200",
             "type": "User",
             "optional": false,
-            "field": "author",
+            "field": "data.author",
             "description": "<p>Автор задачи</p>"
           },
           {
             "group": "Success 200",
             "type": "Uint64",
             "optional": false,
-            "field": "author.id",
+            "field": "data.author.id",
             "description": "<p>ИД автора задачи</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "author.name",
+            "field": "data.author.name",
             "description": "<p>Имя автора</p>"
           },
           {
             "group": "Success 200",
             "type": "User",
             "optional": false,
-            "field": "developer",
+            "field": "data.developer",
             "description": "<p>Разработчик</p>"
           },
           {
             "group": "Success 200",
             "type": "Uint64",
             "optional": false,
-            "field": "developer.id",
+            "field": "data.developer.id",
             "description": "<p>ИД разработчика</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "developer.name",
+            "field": "data.developer.name",
             "description": "<p>Имя разработчика</p>"
           },
           {
             "group": "Success 200",
             "type": "User",
             "optional": false,
-            "field": "customer",
+            "field": "data.customer",
             "description": "<p>Заказчик задачи</p>"
           },
           {
             "group": "Success 200",
             "type": "Uint64",
             "optional": false,
-            "field": "customer.id",
+            "field": "data.customer.id",
             "description": "<p>ИД заказчика</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "customer.name",
+            "field": "data.customer.name",
             "description": "<p>Имя заказчика</p>"
           },
           {
             "group": "Success 200",
             "type": "Category",
             "optional": false,
-            "field": "category",
+            "field": "data.category",
             "description": "<p>Категория задачи</p>"
           },
           {
             "group": "Success 200",
             "type": "Uint64",
             "optional": false,
-            "field": "category.id",
+            "field": "data.category.id",
             "description": "<p>ИД категории</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "category.name",
+            "field": "data.category.name",
             "description": "<p>Название категории</p>"
           },
           {
             "group": "Success 200",
             "type": "Project",
             "optional": false,
-            "field": "project",
+            "field": "data.project",
             "description": "<p>Проект к которому относится задача</p>"
           },
           {
             "group": "Success 200",
             "type": "Uint64",
             "optional": false,
-            "field": "project.id",
+            "field": "data.project.id",
             "description": "<p>ИД проекта</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "project.name",
+            "field": "data.project.name",
             "description": "<p>Название проекта</p>"
           },
           {
             "group": "Success 200",
             "type": "Bool",
             "optional": false,
-            "field": "priority",
+            "field": "data.priority",
             "description": "<p>Приоритет задачи (<code>true</code> - экстренный, <code>false</code> - стандартный )</p>"
           },
           {
             "group": "Success 200",
             "type": "Uint64",
             "optional": false,
-            "field": "exec_order",
+            "field": "data.exec_order",
             "description": "<p>Порядок выполнения задачи</p>"
           }
         ]

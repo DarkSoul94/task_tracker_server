@@ -40,6 +40,7 @@ func (h *Handler) toOutTask(mTask *models.Task) outTask {
 		ID:           mTask.ID,
 		Name:         mTask.Name,
 		Description:  mTask.Description,
+		InWorkTime:   mTask.InWorkTime,
 		CreationDate: mTask.CreationDate.Local().String(),
 		Author: &userInTask{
 			ID:   mTask.Author.ID,
@@ -48,6 +49,10 @@ func (h *Handler) toOutTask(mTask *models.Task) outTask {
 		Category: &hCategory{
 			ID:   mTask.Category.ID,
 			Name: mTask.Category.Name,
+		},
+		Status: &hStatus{
+			ID:   mTask.Status.ID,
+			Name: mTask.Status.Name,
 		},
 		Priority:  mTask.Priority,
 		ExecOrder: mTask.ExecOrder,
