@@ -50,6 +50,7 @@ func (u *Usecase) GetUsersList(user *models.User) ([]models.User, error) {
 			}
 		}
 	}
+
 	return userList, nil
 }
 
