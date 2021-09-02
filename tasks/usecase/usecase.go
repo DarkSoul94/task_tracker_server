@@ -52,6 +52,7 @@ func (u *Usecase) GetTasksList(user *models.User) ([]*models.Task, error) {
 			return []*models.Task{}, err
 		}
 	}
+
 	return taskList, nil
 }
 

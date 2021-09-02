@@ -1,6 +1,10 @@
 package http
 
-import "github.com/DarkSoul94/task_tracker_server/models"
+import (
+	"time"
+
+	"github.com/DarkSoul94/task_tracker_server/models"
+)
 
 func (h *Handler) toNewModelTask(task newTask, user *models.User) models.Task {
 	mTask := models.Task{
@@ -40,8 +44,8 @@ func (h *Handler) toOutTask(mTask *models.Task) outTask {
 		ID:           mTask.ID,
 		Name:         mTask.Name,
 		Description:  mTask.Description,
-		InWorkTime:   mTask.InWorkTime,
-		CreationDate: mTask.CreationDate.Local().String(),
+		InWorkTime:   (mTask.InWorkTime * time.Second).String(),
+		CreationDate: mTask.CreationDate.Local(),
 		Author: &userInTask{
 			ID:   mTask.Author.ID,
 			Name: mTask.Author.Name,

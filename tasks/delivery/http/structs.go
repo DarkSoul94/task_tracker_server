@@ -29,19 +29,19 @@ type newTask struct {
 }
 
 type outTask struct {
-	ID           uint64        `json:"id"`
-	Name         string        `json:"name"`
-	Description  string        `json:"description"`
-	CreationDate string        `json:"creation_date"`
-	InWorkTime   time.Duration `json:"in_work_time"`
-	Status       *hStatus      `json:"status"`
-	Author       *userInTask   `json:"author"`
-	Developer    *userInTask   `json:"developer"`
-	Customer     *userInTask   `json:"customer"`
-	Category     *hCategory    `json:"category"`
-	Project      *hProject     `json:"project"`
-	Priority     bool          `json:"priority"`
-	ExecOrder    uint64        `json:"exec_order"`
+	ID           uint64      `json:"id"`
+	Name         string      `json:"name"`
+	Description  string      `json:"description"`
+	CreationDate time.Time   `json:"creation_date"`
+	InWorkTime   string      `json:"in_work_time"`
+	Status       *hStatus    `json:"status"`
+	Author       *userInTask `json:"author"`
+	Developer    *userInTask `json:"developer"`
+	Customer     *userInTask `json:"customer"`
+	Category     *hCategory  `json:"category"`
+	Project      *hProject   `json:"project"`
+	Priority     bool        `json:"priority"`
+	ExecOrder    uint64      `json:"exec_order"`
 }
 
 type hCategory struct {

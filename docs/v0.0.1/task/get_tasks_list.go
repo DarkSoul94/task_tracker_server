@@ -41,56 +41,64 @@ package task
  *
  * @apiSuccessExample {json} Success-Response:
  * {
+ *   "status": "success",
+ *   "data": [
  *     {
-  "status": "success",
-  "data": [
-    {
-      "id": 1,
-      "name": "test",
-      "description": "test",
-      "creation_date": "2021-08-31 11:21:13 +0300 EEST",
-      "author": {
-        "id": 1,
-        "name": "Евгений Николаевич Табаков"
-      },
-      "developer": {
-        "id": 2,
-        "name": "Вячеслав Викторович Тищенко"
-      },
-      "customer": {
-        "id": 1,
-        "name": "Евгений Николаевич Табаков"
-      },
-      "category": {
-        "id": 1,
-        "name": "test"
-      },
-      "project": null,
-      "priority": true,
-      "exec_order": 0
-    },
-    {
-      "id": 2,
-      "name": "banner",
-      "description": "banner",
-      "creation_date": "2021-08-31 11:21:28 +0300 EEST",
-      "author": {
-        "id": 1,
-        "name": "Евгений Николаевич Табаков"
-      },
-      "developer": null,
-      "customer": null,
-      "category": {
-        "id": 1,
-        "name": "test"
-      },
-      "project": null,
-      "priority": false,
-      "exec_order": 0
-    }
-  ]
-}
+ *       "id": 1,
+ *       "name": "test",
+ *       "description": "test",
+ *       "creation_date": "2021-08-31T11:21:13+03:00",
+ *       "in_work_time": "1h23m20s",
+ *       "status": {
+ *         "id": 2,
+ *         "name": "Очередь к реализации"
+ *       },
+ *       "author": {
+ *         "id": 1,
+ *         "name": "Евгений Николаевич Табаков"
+ *       },
+ *       "developer": {
+ *         "id": 2,
+ *         "name": "Вячеслав Викторович Тищенко"
+ *       },
+ *       "customer": {
+ *         "id": 1,
+ *         "name": "Евгений Николаевич Табаков"
+ *       },
+ *       "category": {
+ *         "id": 1,
+ *         "name": "test"
+ *       },
+ *       "project": null,
+ *       "priority": true,
+ *       "exec_order": 0
+ *     },
+ *     {
+ *       "id": 2,
+ *       "name": "banner",
+ *       "description": "banner",
+ *       "creation_date": "2021-08-31T11:21:28+03:00",
+ *       "in_work_time": "0s",
+ *       "status": {
+ *         "id": 1,
+ *         "name": "Новая"
+ *       },
+ *       "author": {
+ *         "id": 1,
+ *         "name": "Евгений Николаевич Табаков"
+ *       },
+ *       "developer": null,
+ *       "customer": null,
+ *       "category": {
+ *         "id": 1,
+ *         "name": "test"
+ *       },
+ *       "project": null,
+ *       "priority": false,
+ *       "exec_order": 0
+ *     }
+ *   ]
  * }
  *
  *
-*/
+ */

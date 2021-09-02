@@ -3,6 +3,6 @@
     "name": "task tracker",
     "version": "0.0.1",
     "description": "Task Tracker api documentation",
-    "title":"Helpdesk api",
+    "title":"Task tracker api",
     "sampleUrl": "http://localhost:8888/"
 }

@@ -1,33 +1,5 @@
 define({ "api": [
   {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./apidoc/main.js",
-    "group": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
-    "groupTitle": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
-    "name": ""
-  },
-  {
     "type": "POST",
     "url": "/task_tracker/auth/signin",
     "title": "Авторизация",
@@ -254,7 +226,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./tasks/docs/create_task.go",
+    "filename": "./docs/v0.0.1/task/create_task.go",
     "groupTitle": "02_Задачи"
   },
   {
@@ -474,12 +446,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    {\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\",\n      \"description\": \"test\",\n      \"creation_date\": \"2021-08-31 11:21:13 +0300 EEST\",\n      \"author\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"developer\": {\n        \"id\": 2,\n        \"name\": \"Вячеслав Викторович Тищенко\"\n      },\n      \"customer\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"category\": {\n        \"id\": 1,\n        \"name\": \"test\"\n      },\n      \"project\": null,\n      \"priority\": true,\n      \"exec_order\": 0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"banner\",\n      \"description\": \"banner\",\n      \"creation_date\": \"2021-08-31 11:21:28 +0300 EEST\",\n      \"author\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"developer\": null,\n      \"customer\": null,\n      \"category\": {\n        \"id\": 1,\n        \"name\": \"test\"\n      },\n      \"project\": null,\n      \"priority\": false,\n      \"exec_order\": 0\n    }\n  ]\n}\n}",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\",\n      \"description\": \"test\",\n      \"creation_date\": \"2021-08-31T11:21:13+03:00\",\n      \"in_work_time\": \"1h23m20s\",\n      \"status\": {\n        \"id\": 2,\n        \"name\": \"Очередь к реализации\"\n      },\n      \"author\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"developer\": {\n        \"id\": 2,\n        \"name\": \"Вячеслав Викторович Тищенко\"\n      },\n      \"customer\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"category\": {\n        \"id\": 1,\n        \"name\": \"test\"\n      },\n      \"project\": null,\n      \"priority\": true,\n      \"exec_order\": 0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"banner\",\n      \"description\": \"banner\",\n      \"creation_date\": \"2021-08-31T11:21:28+03:00\",\n      \"in_work_time\": \"0s\",\n      \"status\": {\n        \"id\": 1,\n        \"name\": \"Новая\"\n      },\n      \"author\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"developer\": null,\n      \"customer\": null,\n      \"category\": {\n        \"id\": 1,\n        \"name\": \"test\"\n      },\n      \"project\": null,\n      \"priority\": false,\n      \"exec_order\": 0\n    }\n  ]\n}",
           "type": "json"
         }
       ]
     },
-    "filename": "./tasks/docs/get_tasks_list.go",
+    "filename": "./docs/v0.0.1/task/get_tasks_list.go",
     "groupTitle": "02_Задачи"
   },
   {
@@ -549,7 +521,163 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./tasks/docs/track_task.go",
+    "filename": "./docs/v0.0.1/task/track_task.go",
     "groupTitle": "02_Задачи"
+  },
+  {
+    "type": "GET",
+    "url": "/task_tracker/user/list",
+    "title": "Список пользователей",
+    "name": "GetUserList",
+    "group": "03_Пользователи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          },
+          {
+            "group": "200",
+            "type": "[]User",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Данные(список пользователей)</p>"
+          },
+          {
+            "group": "200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>Ид пользователя</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Имя пользователя</p>"
+          },
+          {
+            "group": "200",
+            "type": "Group",
+            "optional": false,
+            "field": "data.group",
+            "description": "<p>Группа к которой относиться пользователь</p>"
+          },
+          {
+            "group": "200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.group.id",
+            "description": "<p>Ид группы</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.group.name",
+            "description": "<p>Имя группы</p>"
+          },
+          {
+            "group": "200",
+            "type": "Permissions",
+            "optional": false,
+            "field": "data.group.permissions",
+            "description": "<p>Набор доступов</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Евгений Николаевич Табаков\",\n      \"group\": {\n        \"id\": 2,\n        \"name\": \"\",\n        \"permissions\": null\n      }\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Вячеслав Викторович Тищенко\",\n      \"group\": {\n        \"id\": 2,\n        \"name\": \"\",\n        \"permissions\": null\n      }\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/user/user_list.go",
+    "groupTitle": "03_Пользователи"
+  },
+  {
+    "type": "GET",
+    "url": "/task_tracker/category/list",
+    "title": "Получение списка категорий",
+    "name": "GetCategoryList",
+    "group": "04_Категории",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          },
+          {
+            "group": "200",
+            "type": "[]Category",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Список категорий</p>"
+          },
+          {
+            "group": "200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Ид категории</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Имя категории</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\"\n    }\n  ]\n}",
+          "type": "type"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/category/get_category_list.go",
+    "groupTitle": "04_Категории"
   }
 ] });
