@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/DarkSoul94/task_tracker_server/global_const"
 	"github.com/DarkSoul94/task_tracker_server/models"
@@ -59,6 +60,28 @@ func (h *Handler) GetTasksList(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outList})
 
+}
+
+func (h *Handler) GetTask(ctx *gin.Context) {
+	var (
+		taskID uint64
+		task   *models.Task
+		err    error
+	)
+
+	taskID, err = strconv.ParseUint(ctx.Request.URL.Query().Get("id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+
+	task, err = h.ucTasks.GetTask(taskID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: h.toOutTask(task)})
 }
 
 //UpdateTask ...

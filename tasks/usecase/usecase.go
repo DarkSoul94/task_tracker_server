@@ -56,6 +56,10 @@ func (u *Usecase) GetTasksList(user *models.User) ([]*models.Task, error) {
 	return taskList, nil
 }
 
+func (u *Usecase) GetTask(taskID uint64) (*models.Task, error) {
+	return u.repo.GetTask(taskID)
+}
+
 func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error {
 	var (
 		task  *models.Task
