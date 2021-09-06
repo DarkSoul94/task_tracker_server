@@ -36,7 +36,7 @@ package task
  *       "in_work_time": "1h23m20s",
  *       "status": {
  *         "id": 2,
- *         "name": ""
+ *         "name": "Очередь к реализации"
  *       },
  *       "priority": true,
  *       "exec_order": 0
@@ -49,7 +49,7 @@ package task
  *       "in_work_time": "0s",
  *       "status": {
  *         "id": 1,
- *         "name": ""
+ *         "name": "Новая"
  *       },
  *       "priority": false,
  *       "exec_order": 0

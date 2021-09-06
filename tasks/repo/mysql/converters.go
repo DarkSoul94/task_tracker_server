@@ -84,7 +84,9 @@ func (r *Repo) toModelTask(dbTask dbTask) *models.Task {
 }
 
 func (r *Repo) toModelTaskForList(task dbTaskForList) *models.TaskForList {
-	return &models.TaskForList{
+	var ts models.TaskStatus
+
+	mTask := &models.TaskForList{
 		ID:           task.ID,
 		Name:         task.Name,
 		Description:  task.Description,
@@ -96,6 +98,11 @@ func (r *Repo) toModelTaskForList(task dbTaskForList) *models.TaskForList {
 		Priority:  task.Priority,
 		ExecOrder: task.ExecOrder,
 	}
+
+	ts.SetByID(task.StatusID)
+	mTask.Status = &ts
+
+	return mTask
 }
 
 func (r *Repo) toModelCategory(dbCat dbCategory) *models.Category {
