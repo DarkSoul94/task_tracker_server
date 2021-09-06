@@ -10,7 +10,7 @@ package task
  *
  * @apiHeader {String} BearerToken 	Авторизационный токен
  *
- * @apiParam  {Uint64} id description
+ * @apiParam  {Uint64} id ИД задачи которую нужно получить
  *
  * @apiExample  Example usage:
  * http://localhost:8585/task_tracker/tasks/task?id=1

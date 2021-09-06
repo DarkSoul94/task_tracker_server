@@ -43,38 +43,44 @@ func (r *Repo) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (r *Repo) GetTasksList(key string, user models.User) ([]*models.Task, error) {
+func (r *Repo) GetTasksList(key string, user models.User) ([]*models.TaskForList, error) {
 	var (
 		query string
 	)
 
 	args := make([]interface{}, 0)
-	dbTasks := make([]dbTask, 0)
-	mTasks := make([]*models.Task, 0)
+	dbTasks := make([]dbTaskForList, 0)
+	mTasks := make([]*models.TaskForList, 0)
+
+	query = `SELECT 
+				id, 
+				name, 
+				description,
+				creation_date,
+				in_work_time,
+				status_id,
+				priority,
+				exec_order
+			FROM tasks `
 
 	switch key {
 	case tasks.KeyGet_All:
-		query = `
-			SELECT * FROM tasks`
+		query += ``
 	case tasks.KeyGet_Author:
-		query = `
-			SELECT * FROM tasks
+		query += `
 			WHERE author_id = ?`
 		args = []interface{}{user.ID}
 	case tasks.KeyGet_Dev:
-		query = `
-			SELECT * FROM tasks
+		query += `
 			WHERE developer_id = ?`
 		args = []interface{}{user.ID}
 	case tasks.KeyGet_AuthorDev:
-		query = `
-		SELECT * FROM tasks
+		query += `
 		WHERE developer_id = ?
 		OR author_id = ?`
 		args = []interface{}{user.ID, user.ID}
 	case tasks.KeyGet_Customer:
-		query = `
-		SELECT * FROM tasks
+		query += `
 		WHERE customer_id = ?`
 		args = []interface{}{user.ID}
 
@@ -85,10 +91,11 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]*models.Task, error
 		logger.LogError("Failed get tasks list from db", "task/repo/mysql", "", err)
 		return nil, err
 	}
-	if len(dbTasks) != 0 {
-		for _, val := range dbTasks {
-			mTasks = append(mTasks, r.toModelTask(val))
-		}
+	if len(dbTasks) == 0 {
+		return []*models.TaskForList{}, nil
+	}
+	for _, task := range dbTasks {
+		mTasks = append(mTasks, r.toModelTaskForList(task))
 	}
 	return mTasks, nil
 }

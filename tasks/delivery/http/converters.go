@@ -86,6 +86,22 @@ func (h *Handler) toOutTask(mTask *models.Task) outTask {
 	return out
 }
 
+func (h *Handler) toOutTaskForList(task *models.TaskForList) outTaskForList {
+	return outTaskForList{
+		ID:           task.ID,
+		Name:         task.Name,
+		Description:  task.Description,
+		CreationDate: task.CreationDate.Local(),
+		InWorkTime:   (task.InWorkTime * time.Second).String(),
+		Status: &hStatus{
+			ID:   task.Status.ID,
+			Name: task.Status.Name,
+		},
+		Priority:  task.Priority,
+		ExecOrder: task.ExecOrder,
+	}
+}
+
 func (h *Handler) toOutCategory(cat *models.Category) hCategory {
 	return hCategory{
 		ID:   cat.ID,

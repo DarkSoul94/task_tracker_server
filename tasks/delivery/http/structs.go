@@ -44,6 +44,17 @@ type outTask struct {
 	ExecOrder    uint64      `json:"exec_order"`
 }
 
+type outTaskForList struct {
+	ID           uint64    `json:"id"`
+	Name         string    `json:"name"`
+	Description  string    `json:"description"`
+	CreationDate time.Time `json:"creation_date"`
+	InWorkTime   string    `json:"in_work_time"`
+	Status       *hStatus  `json:"status"`
+	Priority     bool      `json:"priority"`
+	ExecOrder    uint64    `json:"exec_order"`
+}
+
 type hCategory struct {
 	ID   uint64 `json:"id"`
 	Name string `json:"name"`
