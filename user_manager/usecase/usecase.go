@@ -21,6 +21,12 @@ func (u *Usecase) CreateUser(user *models.User) (uint64, error) {
 	return u.repo.CreateUser(user)
 }
 
+func (u *Usecase) UserUpdate(author *models.User, userID, groupID uint64) error {
+	//TODO add permissions check
+
+	return u.repo.UserUpdate(userID, groupID)
+}
+
 func (u *Usecase) GetUserByEmail(email string) (models.User, error) {
 	return u.repo.GetUserByEmail(email)
 }

@@ -17,7 +17,25 @@ func NewHandler(uc user_manager.UserManagerUC) *Handler {
 }
 
 func (h *Handler) UpdateUser(ctx *gin.Context) {
+	type updateUser struct {
+		UserID  uint64 `json:"user_id"`
+		GroupID uint64 `json:"group_id"`
+	}
+	var newUser updateUser
 
+	user, _ := ctx.Get(global_const.CtxUserKey)
+	err := ctx.BindJSON(&newUser)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+
+	err = h.ucUserManager.UserUpdate(user.(*models.User), newUser.UserID, newUser.GroupID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, map[string]string{"status": global_const.StatusSuccess})
 }
 
 func (h *Handler) GetUsersList(ctx *gin.Context) {

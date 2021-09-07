@@ -27,17 +27,6 @@ type dbTask struct {
 	ExecOrder    int           `db:"exec_order"`
 }
 
-type dbTaskForList struct {
-	ID           uint64        `db:"id"`
-	Name         string        `db:"name"`
-	Description  string        `db:"description"`
-	CreationDate time.Time     `db:"creation_date"`
-	InWorkTime   time.Duration `db:"in_work_time"`
-	StatusID     uint64        `db:"status_id"`
-	Priority     bool          `db:"priority"`
-	ExecOrder    int           `db:"exec_order"`
-}
-
 type dbCategory struct {
 	ID   uint64 `db:"id"`
 	Name string `db:"name"`

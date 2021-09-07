@@ -52,6 +52,18 @@ func (r *Repo) CreateUser(user *models.User) (uint64, error) {
 
 }
 
+func (r *Repo) UserUpdate(userID, groupID uint64) error {
+	query := `
+		UPDATE users SET
+		group_id = ? 
+		WHERE id = ?`
+	_, err := r.db.Exec(query, groupID, userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *Repo) GetUserByEmail(email string) (models.User, error) {
 	var (
 		dbUser dbUser
