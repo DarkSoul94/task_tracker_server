@@ -12,7 +12,7 @@ package task
  *
  *
  * @apiSuccess (Success 200) {String} 		status 				Статус ответа на запрос
- * @apiSuccess (Success 200) {Data} 		data 				Объект с данными по запросу
+ * @apiSuccess (Success 200) {[]Task]} 		data 				Массив объектов "задача"
  * @apiSuccess (Success 200) {Uint64} 		data.id				ИД задачи
  * @apiSuccess (Success 200) {String} 		data.name 			Название задачи
  * @apiSuccess (Success 200) {String} 		data.description 	Описание задачи

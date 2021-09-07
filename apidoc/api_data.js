@@ -476,6 +476,70 @@ define({ "api": [
   },
   {
     "type": "GET",
+    "url": "/task_tracker/tasks/statuses",
+    "title": "Статусы задачи",
+    "name": "GetTaskStatusList",
+    "group": "02_Задачи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус ответа на запрос</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]Status",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Массив объектов &quot;статус задачи&quot;</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>ИД статуса задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Имя статуса</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 8,\n      \"name\": \"Выполнено\"\n    },\n    {\n      \"id\": 1,\n      \"name\": \"Новая\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Очередь к реализации\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"В работе\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Приостановлена\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Ожидание\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Отклонена\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Готово к тестированию\"\n    }\n  ]\n}",
+          "type": "type"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/task/statuses.go",
+    "groupTitle": "02_Задачи"
+  },
+  {
+    "type": "GET",
     "url": "/task_tracker/tasks",
     "title": "Получение списка задач",
     "name": "GetTasksList",
@@ -506,10 +570,10 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "Data",
+            "type": "[]Task]",
             "optional": false,
             "field": "data",
-            "description": "<p>Объект с данными по запросу</p>"
+            "description": "<p>Массив объектов &quot;задача&quot;</p>"
           },
           {
             "group": "Success 200",

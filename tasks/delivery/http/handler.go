@@ -131,3 +131,14 @@ func (h *Handler) GetCategoryList(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outCategories})
 }
+
+func (h *Handler) GetTaskStatusList(ctx *gin.Context) {
+	var statuses []hStatus
+	for _, stat := range models.TaskStatusMap {
+		statuses = append(statuses, hStatus{
+			ID:   stat.ID,
+			Name: stat.Name,
+		})
+	}
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: statuses})
+}
