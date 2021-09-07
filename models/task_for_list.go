@@ -10,5 +10,5 @@ type TaskForList struct {
 	InWorkTime   time.Duration
 	Status       *TaskStatus
 	Priority     bool
-	ExecOrder    uint64
+	ExecOrder    int
 }

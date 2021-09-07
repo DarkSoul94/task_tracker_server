@@ -25,7 +25,7 @@ type newTask struct {
 	DeveloperID uint64 `json:"developer_id,omitempty"`
 	Priority    bool   `json:"priority,omitempty"`
 	CustomerID  uint64 `json:"customer_id,omitempty"`
-	ExecOrder   uint64 `json:"exec_order,omitempty"`
+	ExecOrder   int    `json:"exec_order,omitempty"`
 }
 
 type outTask struct {
@@ -41,7 +41,7 @@ type outTask struct {
 	Category     *hCategory  `json:"category"`
 	Project      *hProject   `json:"project"`
 	Priority     bool        `json:"priority"`
-	ExecOrder    uint64      `json:"exec_order"`
+	ExecOrder    int         `json:"exec_order"`
 }
 
 type outTaskForList struct {
@@ -52,7 +52,7 @@ type outTaskForList struct {
 	InWorkTime   string    `json:"in_work_time"`
 	Status       *hStatus  `json:"status"`
 	Priority     bool      `json:"priority"`
-	ExecOrder    uint64    `json:"exec_order"`
+	ExecOrder    int       `json:"exec_order"`
 }
 
 type hCategory struct {

@@ -41,7 +41,7 @@ package task
  * @apiSuccess (Success 200) {Uint64} 		data.project.id			ИД проекта
  * @apiSuccess (Success 200) {String} 		data.project.name 		Название проекта
  * @apiSuccess (Success 200) {Bool} 		data.priority 			Приоритет задачи (`true` - экстренный, `false` - стандартный )
- * @apiSuccess (Success 200) {Uint64} 		data.exec_order			Порядок выполнения задачи
+ * @apiSuccess (Success 200) {Uint64} 		data.exec_order			Порядок выполнения задачи. 1 - стандартный, 10 - наивысшый.
  *
  * @apiSuccessExample {type} Success-Response:
  * {
