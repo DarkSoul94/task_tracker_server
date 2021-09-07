@@ -15,6 +15,7 @@ package user
  * @apiSuccess (200) {Uint64} 		data.id 					Ид пользователя
  * @apiSuccess (200) {String} 		data.name 				Имя пользователя
  * @apiSuccess (200) {Uint64} 		data.group_id 		Ид группы
+ * @apiSuccess (200) {String} 		data.department 	Отдел пользователя в домене
  *
  * @apiSuccessExample {json} Success-Response:
  * {

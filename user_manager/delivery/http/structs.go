@@ -22,9 +22,10 @@ type outUser struct {
 }
 
 type outUserForList struct {
-	ID      uint64 `json:"id"`
-	Name    string `json:"name"`
-	GroupID uint64 `json:"group_id"`
+	ID         uint64 `json:"id"`
+	Name       string `json:"name"`
+	GroupID    uint64 `json:"group_id"`
+	Department string `json:"department"`
 }
 
 type outGroup struct {

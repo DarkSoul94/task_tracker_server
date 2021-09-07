@@ -19,9 +19,10 @@ func (h *Handler) toOutUser(user models.User) outUser {
 
 func (h *Handler) toOutUserForList(user models.User) outUserForList {
 	return outUserForList{
-		ID:      user.ID,
-		Name:    user.Name,
-		GroupID: user.Group.ID,
+		ID:         user.ID,
+		Name:       user.Name,
+		GroupID:    user.Group.ID,
+		Department: user.Department,
 	}
 }
 
