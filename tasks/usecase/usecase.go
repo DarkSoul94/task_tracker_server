@@ -31,9 +31,9 @@ func (u *Usecase) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (u *Usecase) GetTasksList(user *models.User) ([]*models.Task, error) {
+func (u *Usecase) GetTasksList(user *models.User) ([]*models.TaskForList, error) {
 	var (
-		taskList []*models.Task
+		taskList []*models.TaskForList
 		actions  map[string]string
 		err      error
 	)
@@ -41,16 +41,71 @@ func (u *Usecase) GetTasksList(user *models.User) ([]*models.Task, error) {
 	//TODO add permissions check
 
 	if taskList, err = u.repo.GetTasksList(actions[tasks.KeyGet], *user); err != nil {
-		return []*models.Task{}, ErrFailedGetTasksList
+		return []*models.TaskForList{}, ErrFailedGetTasksList
 	}
 
-	for _, val := range taskList {
-		err = u.fillTask(val)
+	return taskList, nil
+}
+
+func (u *Usecase) GetTask(taskID uint64) (*models.Task, error) {
+	task, err := u.repo.GetTask(taskID)
+	if err != nil {
+		return &models.Task{}, err
+	}
+
+	err = u.fillTask(task)
+	if err != nil {
+		return &models.Task{}, err
+	}
+
+	return task, nil
+}
+
+func (u *Usecase) fillTask(task *models.Task) error {
+	var (
+		cat *models.Category
+		pr  *models.Project
+		err error
+	)
+	cat, err = u.repo.GetCategoryByID(task.Category.ID)
+	if err != nil {
+		return err
+	}
+	task.Category = cat
+
+	if task.Author != nil {
+		user, err := u.userManager.GetUserByID(task.Author.ID)
 		if err != nil {
-			return []*models.Task{}, err
+			return err
+		}
+		task.Author = &user
+	}
+
+	if task.Developer != nil {
+		user, err := u.userManager.GetUserByID(task.Developer.ID)
+		if err != nil {
+			return err
+		}
+		task.Developer = &user
+	}
+
+	if task.Customer != nil {
+		user, err := u.userManager.GetUserByID(task.Customer.ID)
+		if err != nil {
+			return err
+		}
+		task.Customer = &user
+	}
+
+	if task.Project != nil {
+		pr, err = u.repo.GetProjectByID(task.Project.ID)
+		if err != nil {
+			return err
 		}
 	}
-	return taskList, nil
+	task.Project = pr
+
+	return nil
 }
 
 func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error {
@@ -98,52 +153,6 @@ func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error
 	if err != nil {
 		return err
 	}
-
-	return nil
-}
-func (u *Usecase) fillTask(task *models.Task) error {
-	var (
-		cat *models.Category
-		pr  *models.Project
-		err error
-	)
-	cat, err = u.repo.GetCategoryByID(task.Category.ID)
-	if err != nil {
-		return err
-	}
-	task.Category = cat
-
-	if task.Author != nil {
-		user, err := u.userManager.GetUserByID(task.Author.ID)
-		if err != nil {
-			return err
-		}
-		task.Author = &user
-	}
-
-	if task.Developer != nil {
-		user, err := u.userManager.GetUserByID(task.Developer.ID)
-		if err != nil {
-			return err
-		}
-		task.Developer = &user
-	}
-
-	if task.Customer != nil {
-		user, err := u.userManager.GetUserByID(task.Customer.ID)
-		if err != nil {
-			return err
-		}
-		task.Customer = &user
-	}
-
-	if task.Project != nil {
-		pr, err = u.repo.GetProjectByID(task.Project.ID)
-		if err != nil {
-			return err
-		}
-	}
-	task.Project = pr
 
 	return nil
 }

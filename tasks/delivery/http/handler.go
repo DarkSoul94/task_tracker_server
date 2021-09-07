@@ -2,6 +2,8 @@ package http
 
 import (
 	"net/http"
+	"sort"
+	"strconv"
 
 	"github.com/DarkSoul94/task_tracker_server/global_const"
 	"github.com/DarkSoul94/task_tracker_server/models"
@@ -42,7 +44,8 @@ func (h *Handler) CreateTask(ctx *gin.Context) {
 //GetTasksList ...
 func (h *Handler) GetTasksList(ctx *gin.Context) {
 	var (
-		tasksList []*models.Task
+		tasksList []*models.TaskForList
+		outList   []outTaskForList = make([]outTaskForList, 0)
 		err       error
 	)
 
@@ -53,12 +56,33 @@ func (h *Handler) GetTasksList(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
 		return
 	}
-	outList := make([]outTask, 0)
 	for _, val := range tasksList {
-		outList = append(outList, h.toOutTask(val))
+		outList = append(outList, h.toOutTaskForList(val))
 	}
-	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outList})
 
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outList})
+}
+
+func (h *Handler) GetTask(ctx *gin.Context) {
+	var (
+		taskID uint64
+		task   *models.Task
+		err    error
+	)
+
+	taskID, err = strconv.ParseUint(ctx.Request.URL.Query().Get("id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+
+	task, err = h.ucTasks.GetTask(taskID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: h.toOutTask(task)})
 }
 
 //UpdateTask ...
@@ -107,4 +131,19 @@ func (h *Handler) GetCategoryList(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outCategories})
+}
+
+func (h *Handler) GetTaskStatusList(ctx *gin.Context) {
+	var statuses []hStatus
+	for _, stat := range models.TaskStatusMap {
+		statuses = append(statuses, hStatus{
+			ID:   stat.ID,
+			Name: stat.Name,
+		})
+	}
+
+	sort.Slice(statuses, func(i, j int) bool {
+		return statuses[i].ID < statuses[j].ID
+	})
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: statuses})
 }

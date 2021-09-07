@@ -24,7 +24,18 @@ type dbTask struct {
 	CategoryID   uint64        `db:"category_id"`
 	ProjectID    sql.NullInt64 `db:"project_id"`
 	Priority     bool          `db:"priority"`
-	ExecOrder    uint64        `db:"exec_order"`
+	ExecOrder    int           `db:"exec_order"`
+}
+
+type dbTaskForList struct {
+	ID           uint64        `db:"id"`
+	Name         string        `db:"name"`
+	Description  string        `db:"description"`
+	CreationDate time.Time     `db:"creation_date"`
+	InWorkTime   time.Duration `db:"in_work_time"`
+	StatusID     uint64        `db:"status_id"`
+	Priority     bool          `db:"priority"`
+	ExecOrder    int           `db:"exec_order"`
 }
 
 type dbCategory struct {

@@ -1,33 +1,5 @@
 define({ "api": [
   {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./apidoc/main.js",
-    "group": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
-    "groupTitle": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
-    "name": ""
-  },
-  {
     "type": "POST",
     "url": "/task_tracker/auth/signin",
     "title": "Авторизация",
@@ -217,14 +189,14 @@ define({ "api": [
             "type": "Uint64",
             "optional": false,
             "field": "exec_order",
-            "description": "<p>Указатель в каком порядке нужно выполнять задачу <code>(опционально)</code>.</p>"
+            "description": "<p>Указатель в каком порядке нужно выполнять задачу  от 1 до 10 <code>(опционально)</code>. Если не указан по умолчанию указывается 1</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Min-Request-Example:",
-          "content": "{\n\t\t\"name\": \"test\",\n\t\t\"description\": \"test\",\n\t\t\"category_id\": 1\n}",
+          "content": "{\n\t\t\t\"name\": \"test\",\n\t\t\t\"description\": \"test\",\n\t\t\t\"category_id\": 1\n}",
           "type": "json"
         },
         {
@@ -254,14 +226,14 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./tasks/docs/create_task.go",
+    "filename": "./docs/v0.0.1/task/create_task.go",
     "groupTitle": "02_Задачи"
   },
   {
     "type": "GET",
-    "url": "/task_tracker/tasks",
-    "title": "Получение списка задач",
-    "name": "GetTasksList",
+    "url": "/task_tracker/tasks/task",
+    "title": "Получение задачи",
+    "name": "GetTask",
     "group": "02_Задачи",
     "version": "0.0.1",
     "header": {
@@ -277,6 +249,26 @@ define({ "api": [
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Uint64",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ИД задачи которую нужно получить</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost:8585/task_tracker/tasks/task?id=1",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -467,19 +459,203 @@ define({ "api": [
             "type": "Uint64",
             "optional": false,
             "field": "data.exec_order",
-            "description": "<p>Порядок выполнения задачи</p>"
+            "description": "<p>Порядок выполнения задачи. 1 - стандартный, 10 - наивысшый.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    {\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\",\n      \"description\": \"test\",\n      \"creation_date\": \"2021-08-31 11:21:13 +0300 EEST\",\n      \"author\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"developer\": {\n        \"id\": 2,\n        \"name\": \"Вячеслав Викторович Тищенко\"\n      },\n      \"customer\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"category\": {\n        \"id\": 1,\n        \"name\": \"test\"\n      },\n      \"project\": null,\n      \"priority\": true,\n      \"exec_order\": 0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"banner\",\n      \"description\": \"banner\",\n      \"creation_date\": \"2021-08-31 11:21:28 +0300 EEST\",\n      \"author\": {\n        \"id\": 1,\n        \"name\": \"Евгений Николаевич Табаков\"\n      },\n      \"developer\": null,\n      \"customer\": null,\n      \"category\": {\n        \"id\": 1,\n        \"name\": \"test\"\n      },\n      \"project\": null,\n      \"priority\": false,\n      \"exec_order\": 0\n    }\n  ]\n}\n}",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"test\",\n    \"description\": \"test\",\n    \"creation_date\": \"2021-08-31T11:21:13+03:00\",\n    \"in_work_time\": \"1h23m20s\",\n    \"status\": {\n      \"id\": 2,\n      \"name\": \"Очередь к реализации\"\n    },\n    \"author\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"developer\": {\n      \"id\": 2,\n      \"name\": \"\"\n    },\n    \"customer\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"category\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"project\": null,\n    \"priority\": true,\n    \"exec_order\": 0\n  }\n}",
+          "type": "type"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/task/get_task.go",
+    "groupTitle": "02_Задачи"
+  },
+  {
+    "type": "GET",
+    "url": "/task_tracker/tasks/statuses",
+    "title": "Статусы задачи",
+    "name": "GetTaskStatusList",
+    "group": "02_Задачи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус ответа на запрос</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]Status",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Массив объектов &quot;статус задачи&quot;</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>ИД статуса задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Имя статуса</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Новая\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Очередь к реализации\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"В работе\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Приостановлена\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Ожидание\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Отклонена\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Готово к тестированию\"\n    },\n    {\n      \"id\": 8,\n      \"name\": \"Выполнено\"\n    }\n  ]\n}",
+          "type": "type"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/task/statuses.go",
+    "groupTitle": "02_Задачи"
+  },
+  {
+    "type": "GET",
+    "url": "/task_tracker/tasks",
+    "title": "Получение списка задач",
+    "name": "GetTasksList",
+    "group": "02_Задачи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус ответа на запрос</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]Task]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Массив объектов &quot;задача&quot;</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>ИД задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Название задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.description",
+            "description": "<p>Описание задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.creation_date",
+            "description": "<p>Дата создания задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.in_work_time",
+            "description": "<p>Время работы над задачей</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Status",
+            "optional": false,
+            "field": "data.status",
+            "description": "<p>Статус задачи</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.status.id",
+            "description": "<p>ИД статуса</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.status.name",
+            "description": "<p>Название статус</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Bool",
+            "optional": false,
+            "field": "data.priority",
+            "description": "<p>Приоритет задачи (<code>true</code> - экстренный, <code>false</code> - стандартный )</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.exec_order",
+            "description": "<p>Порядок выполнения задачи. 1 - стандартный, 10 - наивысшый.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\",\n      \"description\": \"test\",\n      \"creation_date\": \"2021-08-31T11:21:13+03:00\",\n      \"in_work_time\": \"1h23m20s\",\n      \"status\": {\n        \"id\": 2,\n        \"name\": \"Очередь к реализации\"\n      },\n      \"priority\": true,\n      \"exec_order\": 0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"banner\",\n      \"description\": \"banner\",\n      \"creation_date\": \"2021-08-31T11:21:28+03:00\",\n      \"in_work_time\": \"0s\",\n      \"status\": {\n        \"id\": 1,\n        \"name\": \"Новая\"\n      },\n      \"priority\": false,\n      \"exec_order\": 0\n    }\n  ]\n}",
           "type": "json"
         }
       ]
     },
-    "filename": "./tasks/docs/get_tasks_list.go",
+    "filename": "./docs/v0.0.1/task/get_tasks_list.go",
     "groupTitle": "02_Задачи"
   },
   {
@@ -549,7 +725,163 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./tasks/docs/track_task.go",
+    "filename": "./docs/v0.0.1/task/track_task.go",
     "groupTitle": "02_Задачи"
+  },
+  {
+    "type": "GET",
+    "url": "/task_tracker/user/list",
+    "title": "Список пользователей",
+    "name": "GetUserList",
+    "group": "03_Пользователи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          },
+          {
+            "group": "200",
+            "type": "[]User",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Данные(список пользователей)</p>"
+          },
+          {
+            "group": "200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>Ид пользователя</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Имя пользователя</p>"
+          },
+          {
+            "group": "200",
+            "type": "Group",
+            "optional": false,
+            "field": "data.group",
+            "description": "<p>Группа к которой относиться пользователь</p>"
+          },
+          {
+            "group": "200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.group.id",
+            "description": "<p>Ид группы</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.group.name",
+            "description": "<p>Имя группы</p>"
+          },
+          {
+            "group": "200",
+            "type": "Permissions",
+            "optional": false,
+            "field": "data.group.permissions",
+            "description": "<p>Набор доступов</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Евгений Николаевич Табаков\",\n      \"group\": {\n        \"id\": 2,\n        \"name\": \"\",\n        \"permissions\": null\n      }\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Вячеслав Викторович Тищенко\",\n      \"group\": {\n        \"id\": 2,\n        \"name\": \"\",\n        \"permissions\": null\n      }\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/user/user_list.go",
+    "groupTitle": "03_Пользователи"
+  },
+  {
+    "type": "GET",
+    "url": "/task_tracker/category/list",
+    "title": "Получение списка категорий",
+    "name": "GetCategoryList",
+    "group": "04_Категории",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          },
+          {
+            "group": "200",
+            "type": "[]Category",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Список категорий</p>"
+          },
+          {
+            "group": "200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Ид категории</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Имя категории</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\"\n    }\n  ]\n}",
+          "type": "type"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/category/get_category_list.go",
+    "groupTitle": "04_Категории"
   }
 ] });
