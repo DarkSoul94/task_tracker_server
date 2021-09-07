@@ -758,6 +758,70 @@
   },
   {
     "type": "GET",
+    "url": "/task_tracker/settings/permissions/list",
+    "title": "Список разрешений",
+    "name": "GetPermissionsList",
+    "group": "03_Пользователи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Permissions",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Список доступов</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Permissions",
+            "optional": false,
+            "field": "data.perm_sub_group",
+            "description": "<p>Подгруппа доступов (в примере <code>settings</code>, <code>group</code> и т.д) которая также может содержать другие подгруппы доступов, а также список конечных действий</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]String",
+            "optional": false,
+            "field": "data.actions",
+            "description": "<p>Список конечных действий для подгруппы доступов</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"settings\": {\n      \"group\": {\n        \"actions\": [\n          \"update\",\n          \"create\"\n        ]\n      },\n      \"user\": {\n        \"actions\": [\n          \"update\"\n        ]\n      }\n    },\n    \"task\": {\n      \"actions\": [\n        \"create\",\n        \"update\"\n      ],\n      \"get\": {\n        \"actions\": [\n          \"author\",\n          \"dev\",\n          \"customer\"\n        ]\n      }\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/user/permissions.go",
+    "groupTitle": "03_Пользователи"
+  },
+  {
+    "type": "GET",
     "url": "/task_tracker/settings/user/list",
     "title": "Список пользователей",
     "name": "GetUserList",
@@ -825,6 +889,69 @@
       ]
     },
     "filename": "./docs/v0.0.1/user/user_list.go",
+    "groupTitle": "03_Пользователи"
+  },
+  {
+    "type": "POST",
+    "url": "/task_tracker/settings/user/update",
+    "title": "Изменить группу пользователю",
+    "name": "UserUpdate",
+    "group": "03_Пользователи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Uint64",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ИД пользователя</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Uint64",
+            "optional": false,
+            "field": "group_id",
+            "description": "<p>ИД новой группы пользователя</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/user/user_update.go",
     "groupTitle": "03_Пользователи"
   },
   {
