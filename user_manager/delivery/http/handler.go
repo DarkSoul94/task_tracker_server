@@ -75,5 +75,5 @@ func (h *Handler) GetPermList(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: /*h.toOutPermissions(perm)*/ perm})
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: h.toOutPermissions(perm)})
 }
