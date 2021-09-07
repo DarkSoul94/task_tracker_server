@@ -40,7 +40,7 @@ func (h *Handler) UpdateUser(ctx *gin.Context) {
 
 func (h *Handler) GetUsersList(ctx *gin.Context) {
 	var (
-		outUsers []outUser
+		outUsers []outUserForList
 		userList []models.User
 		err      error
 	)
@@ -51,7 +51,7 @@ func (h *Handler) GetUsersList(ctx *gin.Context) {
 		return
 	}
 	for _, user := range userList {
-		outUsers = append(outUsers, h.toOutUser(user))
+		outUsers = append(outUsers, h.toOutUserForList(user))
 	}
 
 	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: outUsers})

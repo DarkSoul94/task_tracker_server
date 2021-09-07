@@ -37,28 +37,14 @@ func (u *Usecase) GetUserByID(id uint64) (models.User, error) {
 
 func (u *Usecase) GetUsersList(user *models.User) ([]models.User, error) {
 	var (
-		err       error
-		userList  []models.User
-		groupList []models.Group
+		err      error
+		userList []models.User
 	)
 
 	//TODO add perm check
 
 	if userList, err = u.repo.GetUsersList(); err != nil {
 		return nil, ErrFailedGetUsersList
-	}
-
-	if groupList, err = u.repo.GetGroupList(); err != nil {
-		return nil, ErrFailedGetGroupList
-	}
-
-	for _, user := range userList {
-		for _, group := range groupList {
-			if user.Group.ID == group.ID {
-				user.Group = &group
-				break
-			}
-		}
 	}
 
 	return userList, nil

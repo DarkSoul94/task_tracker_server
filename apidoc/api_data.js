@@ -1,5 +1,33 @@
 define({ "api": [
   {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "./apidoc/main.js",
+    "group": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
+    "groupTitle": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
+    "name": ""
+  },
+  {
     "type": "POST",
     "url": "/task_tracker/auth/signin",
     "title": "Авторизация",
@@ -730,7 +758,7 @@ define({ "api": [
   },
   {
     "type": "GET",
-    "url": "/task_tracker/user/list",
+    "url": "/task_tracker/settings/user/list",
     "title": "Список пользователей",
     "name": "GetUserList",
     "group": "03_Пользователи",
@@ -781,38 +809,17 @@ define({ "api": [
           },
           {
             "group": "200",
-            "type": "Group",
-            "optional": false,
-            "field": "data.group",
-            "description": "<p>Группа к которой относиться пользователь</p>"
-          },
-          {
-            "group": "200",
             "type": "Uint64",
             "optional": false,
-            "field": "data.group.id",
+            "field": "data.group_id",
             "description": "<p>Ид группы</p>"
-          },
-          {
-            "group": "200",
-            "type": "String",
-            "optional": false,
-            "field": "data.group.name",
-            "description": "<p>Имя группы</p>"
-          },
-          {
-            "group": "200",
-            "type": "Permissions",
-            "optional": false,
-            "field": "data.group.permissions",
-            "description": "<p>Набор доступов</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Евгений Николаевич Табаков\",\n      \"group\": {\n        \"id\": 2,\n        \"name\": \"\",\n        \"permissions\": null\n      }\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Вячеслав Викторович Тищенко\",\n      \"group\": {\n        \"id\": 2,\n        \"name\": \"\",\n        \"permissions\": null\n      }\n    }\n  ]\n}",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Евгений Николаевич Табаков\",\n      \"group_id\": 2\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Вячеслав Викторович Тищенко\",\n      \"group\": 2\n    }\n  ]\n}",
           "type": "json"
         }
       ]

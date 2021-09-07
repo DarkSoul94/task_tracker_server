@@ -21,6 +21,12 @@ type outUser struct {
 	Group *outGroup `json:"group"`
 }
 
+type outUserForList struct {
+	ID      uint64 `json:"id"`
+	Name    string `json:"name"`
+	GroupID uint64 `json:"group_id"`
+}
+
 type outGroup struct {
 	ID          uint64 `json:"id"`
 	Name        string `json:"name"`
