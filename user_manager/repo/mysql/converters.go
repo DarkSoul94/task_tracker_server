@@ -10,15 +10,15 @@ import (
 )
 
 func (r *Repo) toModelGroup(dbGroup dbGroup) models.Group {
+	var temp perm_manager.PermLayer
+	err := json.Unmarshal(dbGroup.Permissions, &temp)
+	if err != nil {
+		logger.LogError(ErrReadGroup.Error(), "user_manager/repo/mysql", strconv.FormatUint(dbGroup.ID, 10), err)
+	}
 	mGroup := models.Group{
 		ID:          dbGroup.ID,
 		Name:        dbGroup.Name,
-		Permissions: perm_manager.PermLayer{},
-	}
-
-	err := json.Unmarshal(dbGroup.Permissions, &mGroup.Permissions)
-	if err != nil {
-		logger.LogError(ErrReadGroup.Error(), "user_manager/repo/mysql", strconv.FormatUint(dbGroup.ID, 10), err)
+		Permissions: temp,
 	}
 	return mGroup
 }
