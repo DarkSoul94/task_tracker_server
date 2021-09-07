@@ -4,7 +4,7 @@ import "github.com/DarkSoul94/task_tracker_server/models"
 
 type TasksRepo interface {
 	CreateTask(task models.Task) error
-	GetTasksList(key string, user models.User) ([]*models.TaskForList, error)
+	GetTasksList(user models.User) ([]*models.TaskForList, error)
 	GetTask(taskID uint64) (*models.Task, error)
 
 	InsertTaskTrack(tackTrack *models.TaskTrack) error

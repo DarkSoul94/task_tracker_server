@@ -7,7 +7,6 @@ import (
 
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/pkg/logger"
-	"github.com/DarkSoul94/task_tracker_server/tasks"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -43,12 +42,10 @@ func (r *Repo) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (r *Repo) GetTasksList(key string, user models.User) ([]*models.TaskForList, error) {
+func (r *Repo) GetTasksList(user models.User) ([]*models.TaskForList, error) {
 	var (
 		query string
 	)
-
-	args := make([]interface{}, 0)
 	dbTasks := make([]dbTaskForList, 0)
 	mTasks := make([]*models.TaskForList, 0)
 
@@ -63,30 +60,7 @@ func (r *Repo) GetTasksList(key string, user models.User) ([]*models.TaskForList
 				exec_order
 			FROM tasks `
 
-	switch key {
-	case tasks.KeyGet_All:
-		query += ``
-	case tasks.KeyGet_Author:
-		query += `
-			WHERE author_id = ?`
-		args = []interface{}{user.ID}
-	case tasks.KeyGet_Dev:
-		query += `
-			WHERE developer_id = ?`
-		args = []interface{}{user.ID}
-	case tasks.KeyGet_AuthorDev:
-		query += `
-		WHERE developer_id = ?
-		OR author_id = ?`
-		args = []interface{}{user.ID, user.ID}
-	case tasks.KeyGet_Customer:
-		query += `
-		WHERE customer_id = ?`
-		args = []interface{}{user.ID}
-
-	}
-
-	err := r.db.Select(&dbTasks, query, args...)
+	err := r.db.Select(&dbTasks, query)
 	if err != nil {
 		logger.LogError("Failed get tasks list from db", "task/repo/mysql", "", err)
 		return nil, err

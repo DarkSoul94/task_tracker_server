@@ -34,13 +34,12 @@ func (u *Usecase) CreateTask(task models.Task) error {
 func (u *Usecase) GetTasksList(user *models.User) ([]*models.TaskForList, error) {
 	var (
 		taskList []*models.TaskForList
-		actions  map[string]string
 		err      error
 	)
 
 	//TODO add permissions check
 
-	if taskList, err = u.repo.GetTasksList(actions[tasks.KeyGet], *user); err != nil {
+	if taskList, err = u.repo.GetTasksList(*user); err != nil {
 		return []*models.TaskForList{}, ErrFailedGetTasksList
 	}
 
