@@ -38,9 +38,7 @@ func (u *Usecase) GetTasksList(user *models.User) ([]*models.Task, error) {
 		err      error
 	)
 
-	if actions, err = u.userManager.TargetActionPermissionCheck(user, tasks.KeyGet); err != nil {
-		return []*models.Task{}, err
-	}
+	//TODO add permissions check
 
 	if taskList, err = u.repo.GetTasksList(actions[tasks.KeyGet], *user); err != nil {
 		return []*models.Task{}, ErrFailedGetTasksList

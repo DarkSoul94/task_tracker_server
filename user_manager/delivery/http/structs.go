@@ -22,7 +22,7 @@ type outUser struct {
 }
 
 type outGroup struct {
-	ID          uint64              `json:"id"`
-	Name        string              `json:"name"`
-	Permissions map[string][]string `json:"permissions"`
+	ID          uint64 `json:"id"`
+	Name        string `json:"name"`
+	Permissions []byte `json:"permissions"`
 }

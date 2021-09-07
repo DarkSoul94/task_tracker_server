@@ -1,6 +1,9 @@
 package user_manager
 
-import "github.com/DarkSoul94/task_tracker_server/models"
+import (
+	"github.com/DarkSoul94/task_tracker_server/models"
+	"github.com/DarkSoul94/task_tracker_server/user_manager/perm_manager"
+)
 
 type UserManagerUC interface {
 	CreateUser(user *models.User) (uint64, error)
@@ -9,6 +12,9 @@ type UserManagerUC interface {
 	GetUsersList(askUser *models.User) ([]models.User, error)
 
 	GetGroupByID(groupID uint64) (models.Group, error)
+	GetGroupList() ([]models.Group, error)
+	GroupUpdate(id uint64, permission []byte) error
+	CreateGroup(name string, permissions []byte) (uint64, error)
 
-	TargetActionPermissionCheck(user *models.User, actions ...string) (map[string]string, error)
+	GetFullPermListInBytes() (perm_manager.PermLayer, error)
 }

@@ -1,15 +1,20 @@
 package usecase
 
 import (
+	"github.com/DarkSoul94/task_tracker_server/global_const"
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/user_manager"
+	"github.com/DarkSoul94/task_tracker_server/user_manager/perm_manager"
 )
 
 // NewUsecase ...
 func NewUsecase(repo user_manager.UserManagerRepo) *Usecase {
-	return &Usecase{
-		repo: repo,
+	uc := Usecase{
+		repo:        repo,
+		permManager: perm_manager.Manager{},
 	}
+	uc.permManager.CreateManagerFromActions(global_const.ActionsForPerm...)
+	return &uc
 }
 
 func (u *Usecase) CreateUser(user *models.User) (uint64, error) {
@@ -30,9 +35,8 @@ func (u *Usecase) GetUsersList(user *models.User) ([]models.User, error) {
 		userList  []models.User
 		groupList []models.Group
 	)
-	if _, err = u.TargetActionPermissionCheck(user, user_manager.KeyGet); err != nil {
-		return nil, err
-	}
+
+	//TODO add perm check
 
 	if userList, err = u.repo.GetUsersList(); err != nil {
 		return nil, ErrFailedGetUsersList
@@ -58,24 +62,19 @@ func (u *Usecase) GetGroupByID(groupID uint64) (models.Group, error) {
 	return u.repo.GetGroupByID(groupID)
 }
 
-func (u *Usecase) TargetActionPermissionCheck(user *models.User, actions ...string) (map[string]string, error) {
-	var (
-		group models.Group
-		err   error
-	)
-	result := make(map[string]string)
+func (u *Usecase) GetGroupList() ([]models.Group, error) {
 
-	group, err = u.repo.GetGroupByID(user.Group.ID)
-	if err != nil {
-		return nil, err
-	}
-	permissions := group.ParsePermissionsByAction(actions...)
-	for _, val := range actions {
-		action := checksList[val](permissions)
-		if len(action) == 0 {
-			return nil, ErrUnauthorized
-		}
-		result[val] = action
-	}
-	return result, nil
+	return nil, nil
+}
+
+func (u *Usecase) GroupUpdate(id uint64, permission []byte) error {
+	return nil
+}
+
+func (u *Usecase) CreateGroup(name string, permissions []byte) (uint64, error) {
+	return 0, nil
+}
+
+func (u *Usecase) GetFullPermListInBytes() (perm_manager.PermLayer, error) {
+	return u.permManager.ExportPermissionsList()
 }

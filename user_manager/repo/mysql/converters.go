@@ -6,19 +6,20 @@ import (
 
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/pkg/logger"
+	"github.com/DarkSoul94/task_tracker_server/user_manager/perm_manager"
 )
 
 func (r *Repo) toModelGroup(dbGroup dbGroup) models.Group {
 	mGroup := models.Group{
-		ID:   dbGroup.ID,
-		Name: dbGroup.Name,
+		ID:          dbGroup.ID,
+		Name:        dbGroup.Name,
+		Permissions: perm_manager.PermLayer{},
 	}
-	temp := make(map[string][]string)
-	err := json.Unmarshal(dbGroup.Permissions, &temp)
+
+	err := json.Unmarshal(dbGroup.Permissions, &mGroup.Permissions)
 	if err != nil {
 		logger.LogError(ErrReadGroup.Error(), "user_manager/repo/mysql", strconv.FormatUint(dbGroup.ID, 10), err)
 	}
-	mGroup.Permissions = temp
 	return mGroup
 }
 

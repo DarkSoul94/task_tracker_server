@@ -50,3 +50,12 @@ func (h *Handler) UpdateGroup(ctx *gin.Context) {
 func (h *Handler) GetGroupsList(ctx *gin.Context) {
 
 }
+
+func (h *Handler) GetPermList(ctx *gin.Context) {
+	perm, err := h.ucUserManager.GetFullPermListInBytes()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: /*h.toOutPermissions(perm)*/ perm})
+}

@@ -1,19 +1,23 @@
 package global_const
 
+//группа целевых действий связанные с задачами
 const (
-	ActionTaskGet          = "task.get" //получение списка задач
-	ActionTaskGet_author   = "task.get.author"
-	ActionTaskGet_dev      = "task.get.dev"
-	ActionTaskGet_customer = "task.get.customer"
+	ActionTaskGet          = "task.get"          //получение списка задач
+	ActionTaskGet_author   = "task.get.author"   //получение списка задач по автору
+	ActionTaskGet_dev      = "task.get.dev"      //получение списка задач по разработчику
+	ActionTaskGet_customer = "task.get.customer" //получение списка задач по заказчику
 
 	ActionTaskCreate = "task.create" //создание новой задачи
 
 	ActionTaskUpdate = "task.update" //обновление задачи
+)
 
-	ActionUserUpdate = "user.update" //обновление пользователя
+//группа целевых действий связанных с изменениями настроек системы, групп, пользователей и т.д.
+const (
+	SettingsUserUpdate = "settings.user.update" //обновление пользователя
 
-	ActionGroupUpdate = "group.update" //обновление группы пользователей
-	ActionGroupCreate = "group.create" //создание группы пользователей
+	SettingsGroupUpdate = "settings.group.update" //обновление группы пользователей
+	SettingsGroupCreate = "settings.group.create" //создание группы пользователей
 )
 
 var ActionsForPerm []string = []string{
@@ -22,7 +26,7 @@ var ActionsForPerm []string = []string{
 	ActionTaskGet_customer,
 	ActionTaskCreate,
 	ActionTaskUpdate,
-	ActionUserUpdate,
-	ActionGroupUpdate,
-	ActionGroupCreate,
+	SettingsUserUpdate,
+	SettingsGroupUpdate,
+	SettingsGroupCreate,
 }

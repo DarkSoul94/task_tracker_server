@@ -1,12 +1,17 @@
 package http
 
-import "github.com/DarkSoul94/task_tracker_server/models"
+import (
+	"encoding/json"
+
+	"github.com/DarkSoul94/task_tracker_server/models"
+)
 
 func (h *Handler) toInpGroup(group *models.Group) *inpGroup {
+	temp, _ := json.Marshal(group.Permissions)
 	return &inpGroup{
 		ID:          group.ID,
 		Name:        group.Name,
-		Permissions: group.Permissions,
+		Permissions: temp,
 	}
 }
 

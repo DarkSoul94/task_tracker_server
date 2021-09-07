@@ -55,12 +55,8 @@ func (m *Manager) putToLayer(targetLayer *PermLayer, actions []string) {
 	}
 }
 
-func (m *Manager) ExportPermissionsList() ([]byte, error) {
-	out, err := json.Marshal(m.permissions)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+func (m *Manager) ExportPermissionsList() (PermLayer, error) {
+	return m.permissions, nil
 }
 
 func (m *Manager) CheckPermissionForActions(permissions []byte, actions ...string) error {

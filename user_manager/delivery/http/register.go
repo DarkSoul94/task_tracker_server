@@ -9,24 +9,21 @@ import (
 func RegisterHTTPEndpoints(router *gin.RouterGroup, uc user_manager.UserManagerUC, middlewares ...gin.HandlerFunc) {
 	h := NewHandler(uc)
 
-	userEndpoints := router.Group("/user")
-	userEndpoints.Use(middlewares...)
+	settingsEndpoints := router.Group("/settings")
+	settingsEndpoints.Use(middlewares...)
 	{
-		//http://localhost:8585/task_tracker/user/update
-		userEndpoints.POST("/update", h.UpdateUser)
-		//http://localhost:8585/task_tracker/user/list
-		userEndpoints.GET("/list", h.GetUsersList)
-	}
-
-	groupEndpoints := router.Group("/group")
-	groupEndpoints.Use(middlewares...)
-	{
-		//http://localhost:8585/task_tracker/group/create
-		groupEndpoints.POST("/create", h.CreateGroup)
-		//http://localhost:8585/task_tracker/group/update
-		groupEndpoints.POST("/update", h.UpdateGroup)
-		//http://localhost:8585/task_tracker/group/list
-		groupEndpoints.GET("/list", h.GetGroupsList)
+		//http://localhost:8585/task_tracker/settings/user/list
+		settingsEndpoints.GET("/user/list", h.GetUsersList)
+		//http://localhost:8585/task_tracker/settings/user/update
+		settingsEndpoints.POST("/user/update", h.UpdateUser)
+		//http://localhost:8585/task_tracker/settings/group/create
+		settingsEndpoints.POST("/group/create", h.CreateGroup)
+		//http://localhost:8585/task_tracker/settings/group/update
+		settingsEndpoints.POST("/group/update", h.UpdateGroup)
+		//http://localhost:8585/task_tracker/settings/group/list
+		settingsEndpoints.GET("/group/list", h.GetGroupsList)
+		//http://localhost:8585/task_tracker/settings/permissions/list
+		settingsEndpoints.GET("/permissions/list", h.GetPermList)
 	}
 
 }

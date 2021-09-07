@@ -12,9 +12,29 @@ INSERT INTO `user_groups` SET
 
 INSERT INTO `user_groups` SET
 `name` = "Admin",
-`permissions` = '{
-\"user\": [\"user.update\", \"user.get\"],
-\"task\": [\"task.create\", \"task.get.all\"]}';
+`permissions` = '
+{
+  \"sub_perm\": {
+    \"task\": {
+      \"sub_perm\": {
+        \"get\": {
+          \"actions_list\": [\"author\", \"dev\", \"customer\"]
+        }
+      }, 
+        \"actions_list\": [\"create\", \"update\"]
+    }, 
+    \"settings\": {
+      \"sub_perm\": {
+        \"user\": {
+          \"actions_list\": [\"update\"]
+        }, 
+        \"group\": {
+          \"actions_list\": [\"update\", \"create\"]
+        }
+      }
+    }
+  }
+}';
 
 INSERT INTO `user_groups` SET
 `name` = "PM",
