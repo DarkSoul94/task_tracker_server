@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"sort"
 	"strconv"
 
 	"github.com/DarkSoul94/task_tracker_server/global_const"
@@ -140,5 +141,9 @@ func (h *Handler) GetTaskStatusList(ctx *gin.Context) {
 			Name: stat.Name,
 		})
 	}
+
+	sort.Slice(statuses, func(i, j int) bool {
+		return statuses[i].ID < statuses[j].ID
+	})
 	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: statuses})
 }
