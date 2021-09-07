@@ -42,12 +42,12 @@ func (r *Repo) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (r *Repo) GetTasksList(user models.User) ([]*models.TaskForList, error) {
+func (r *Repo) GetTasksList(user models.User) ([]*models.Task, error) {
 	var (
 		query string
 	)
-	dbTasks := make([]dbTaskForList, 0)
-	mTasks := make([]*models.TaskForList, 0)
+	dbTasks := make([]dbTask, 0)
+	mTasks := make([]*models.Task, 0)
 
 	query = `SELECT 
 				id, 
@@ -66,10 +66,10 @@ func (r *Repo) GetTasksList(user models.User) ([]*models.TaskForList, error) {
 		return nil, err
 	}
 	if len(dbTasks) == 0 {
-		return []*models.TaskForList{}, nil
+		return []*models.Task{}, nil
 	}
 	for _, task := range dbTasks {
-		mTasks = append(mTasks, r.toModelTaskForList(task))
+		mTasks = append(mTasks, r.toModelTask(task))
 	}
 	return mTasks, nil
 }

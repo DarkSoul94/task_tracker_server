@@ -83,28 +83,6 @@ func (r *Repo) toModelTask(dbTask dbTask) *models.Task {
 	return &mTask
 }
 
-func (r *Repo) toModelTaskForList(task dbTaskForList) *models.TaskForList {
-	var ts models.TaskStatus
-
-	mTask := &models.TaskForList{
-		ID:           task.ID,
-		Name:         task.Name,
-		Description:  task.Description,
-		CreationDate: task.CreationDate,
-		InWorkTime:   task.InWorkTime,
-		Status: &models.TaskStatus{
-			ID: task.StatusID,
-		},
-		Priority:  task.Priority,
-		ExecOrder: task.ExecOrder,
-	}
-
-	ts.SetByID(task.StatusID)
-	mTask.Status = &ts
-
-	return mTask
-}
-
 func (r *Repo) toModelCategory(dbCat dbCategory) *models.Category {
 	return &models.Category{
 		ID:   dbCat.ID,

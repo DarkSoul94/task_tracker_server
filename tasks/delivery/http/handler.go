@@ -44,7 +44,7 @@ func (h *Handler) CreateTask(ctx *gin.Context) {
 //GetTasksList ...
 func (h *Handler) GetTasksList(ctx *gin.Context) {
 	var (
-		tasksList []*models.TaskForList
+		tasksList []*models.Task
 		outList   []outTaskForList = make([]outTaskForList, 0)
 		err       error
 	)

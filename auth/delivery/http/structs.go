@@ -14,9 +14,9 @@ type Response struct {
 }
 
 type inpGroup struct {
-	ID          uint64 `json:"group_id"`
-	Name        string `json:"group_name"`
-	Permissions []byte `json:"permissions"`
+	ID          uint64                 `json:"group_id"`
+	Name        string                 `json:"group_name"`
+	Permissions map[string]interface{} `json:"permissions"`
 }
 
 type loginUser struct {
