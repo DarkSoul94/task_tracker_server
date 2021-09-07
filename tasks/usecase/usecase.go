@@ -31,16 +31,16 @@ func (u *Usecase) CreateTask(task models.Task) error {
 	return nil
 }
 
-func (u *Usecase) GetTasksList(user *models.User) ([]*models.TaskForList, error) {
+func (u *Usecase) GetTasksList(user *models.User) ([]*models.Task, error) {
 	var (
-		taskList []*models.TaskForList
+		taskList []*models.Task
 		err      error
 	)
 
 	//TODO add permissions check
 
 	if taskList, err = u.repo.GetTasksList(*user); err != nil {
-		return []*models.TaskForList{}, ErrFailedGetTasksList
+		return []*models.Task{}, ErrFailedGetTasksList
 	}
 
 	return taskList, nil

@@ -86,7 +86,7 @@ func (h *Handler) toOutTask(mTask *models.Task) outTask {
 	return out
 }
 
-func (h *Handler) toOutTaskForList(task *models.TaskForList) outTaskForList {
+func (h *Handler) toOutTaskForList(task *models.Task) outTaskForList {
 	return outTaskForList{
 		ID:           task.ID,
 		Name:         task.Name,
