@@ -24,7 +24,7 @@ func (h *Handler) CreateTask(ctx *gin.Context) {
 		task newTask
 		err  error
 	)
-	user, _ := ctx.Get("user")
+	user, _ := ctx.Get(global_const.CtxUserKey)
 
 	err = ctx.BindJSON(&task)
 	if err != nil {
@@ -87,7 +87,23 @@ func (h *Handler) GetTask(ctx *gin.Context) {
 
 //UpdateTask ...
 func (h *Handler) UpdateTask(ctx *gin.Context) {
+	var (
+		task newTask
+		err  error
+	)
 
+	user, _ := ctx.Get(global_const.CtxUserKey)
+	err = ctx.BindJSON(&task)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+	err = h.ucTasks.UpdateTask(user.(*models.User), h.toModelTask(task))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, map[string]string{"status": global_const.StatusSuccess})
 }
 
 func (h *Handler) TrackTask(ctx *gin.Context) {

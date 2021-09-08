@@ -3,6 +3,7 @@ package tasksUC
 import (
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/tasks"
+	"github.com/DarkSoul94/task_tracker_server/tasks/usecase/updTaskDisp"
 	"github.com/DarkSoul94/task_tracker_server/user_manager"
 )
 
@@ -10,6 +11,7 @@ import (
 type Usecase struct {
 	repo        tasks.TasksRepo
 	userManager user_manager.UserManagerUC
+	updTaskDisp updTaskDisp.UpdTaskDisp
 }
 
 // NewUsecase ...
@@ -17,17 +19,36 @@ func NewUsecase(repo tasks.TasksRepo, userManager user_manager.UserManagerUC) *U
 	return &Usecase{
 		repo:        repo,
 		userManager: userManager,
+		updTaskDisp: updTaskDisp.NewTaskUpdDispatcher(repo, userManager),
 	}
 }
 
 func (u *Usecase) CreateTask(task models.Task) error {
 	var err error
+	//TODO add permissions check
 
 	task.FillNewTask()
 	err = u.repo.CreateTask(task)
 	if err != nil {
 		return ErrFailedCreateTask
 	}
+	return nil
+}
+
+func (u *Usecase) UpdateTask(user *models.User, task models.Task) error {
+	var (
+		err       error
+		existTask *models.Task
+	)
+	existTask, err = u.repo.GetTask(task.ID)
+	if err != nil {
+		return err
+	}
+
+	u.updTaskDisp.SetData(existTask, &task, user)
+
+	//TODO add permissions check
+
 	return nil
 }
 

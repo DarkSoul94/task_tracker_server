@@ -38,6 +38,37 @@ func (h *Handler) toNewModelTask(task newTask, user *models.User) models.Task {
 
 	return mTask
 }
+func (h *Handler) toModelTask(task newTask) models.Task {
+	mTask := models.Task{
+		Name:        task.Name,
+		Description: task.Description,
+		Category: &models.Category{
+			ID: task.CategoryID,
+		},
+		Priority:  task.Priority,
+		ExecOrder: task.ExecOrder,
+	}
+
+	if task.DeveloperID != 0 {
+		mTask.Developer = &models.User{
+			ID: task.DeveloperID,
+		}
+	}
+
+	if task.CustomerID != 0 {
+		mTask.Customer = &models.User{
+			ID: task.CustomerID,
+		}
+	}
+
+	if task.ProjectID != 0 {
+		mTask.Project = &models.Project{
+			ID: task.ProjectID,
+		}
+	}
+
+	return mTask
+}
 
 func (h *Handler) toOutTask(mTask *models.Task) outTask {
 	out := outTask{
