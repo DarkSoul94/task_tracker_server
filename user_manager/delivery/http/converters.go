@@ -1,8 +1,6 @@
 package http
 
 import (
-	"encoding/json"
-
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/user_manager/perm_manager"
 )
@@ -27,11 +25,17 @@ func (h *Handler) toOutUserForList(user models.User) outUserForList {
 }
 
 func (h *Handler) toOutGroup(group models.Group) outGroup {
-	temp, _ := json.Marshal(group.Permissions)
 	return outGroup{
 		ID:          group.ID,
 		Name:        group.Name,
-		Permissions: temp,
+		Permissions: h.toOutPermissions(group.Permissions),
+	}
+}
+
+func (h *Handler) toOutGroupForList(group models.Group) outGroup {
+	return outGroup{
+		ID:   group.ID,
+		Name: group.Name,
 	}
 }
 

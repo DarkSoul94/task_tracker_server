@@ -12,8 +12,8 @@ type UserManagerUC interface {
 	GetUserByID(id uint64) (models.User, error)
 	GetUsersList(askUser *models.User) ([]models.User, error)
 
-	GetGroupByID(groupID uint64) (models.Group, error)
-	GetGroupList() ([]models.Group, error)
+	GetGroupByID(user *models.User, groupID uint64) (models.Group, error)
+	GetGroupList(user *models.User) ([]models.Group, error)
 	GroupUpdate(id uint64, permission []byte) error
 	CreateGroup(name string, permissions []byte) (uint64, error)
 

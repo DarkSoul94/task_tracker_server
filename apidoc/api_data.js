@@ -758,6 +758,155 @@ define({ "api": [
   },
   {
     "type": "GET",
+    "url": "/task_tracker/settings/group/:id",
+    "title": "Получение одной группы по ее ID",
+    "name": "GetGroup",
+    "group": "03_Пользователи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]Group",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Данные(список пользователей)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>Ид группы</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Имя группы</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Permissions",
+            "optional": false,
+            "field": "data.permissions",
+            "description": "<p>Имя группы</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Permissions",
+            "optional": false,
+            "field": "data.permissions.perm_sub_group",
+            "description": "<p>Подгруппа доступов (в примере <code>settings</code>, <code>group</code> и т.д) которая также может содержать другие подгруппы доступов, а также список конечных действий</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]String",
+            "optional": false,
+            "field": "data.permissions.actions",
+            "description": "<p>Список конечных действий для подгруппы доступов</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"id\": 2,\n    \"name\": \"Admin\",\n    \"permissions\": {\n      \"settings\": {\n        \"group\": {\n          \"actions\": [\n            \"update\",\n            \"create\"\n          ]\n        },\n        \"user\": {\n          \"actions\": [\n            \"update\"\n          ]\n        }\n      },\n      \"task\": {\n        \"actions\": [\n          \"create\",\n          \"update\"\n        ],\n        \"get\": {\n          \"actions\": [\n            \"author\",\n            \"dev\",\n            \"customer\"\n          ]\n        }\n      }\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/user/group_get.go",
+    "groupTitle": "03_Пользователи"
+  },
+  {
+    "type": "GET",
+    "url": "/task_tracker/settings/group/list",
+    "title": "Список групп",
+    "name": "GetGroupList",
+    "group": "03_Пользователи",
+    "version": "0.0.1",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "BearerToken",
+            "description": "<p>Авторизационный токен</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Статус выполнения запроса</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]Group",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Данные(список групп)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Uint64",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>Ид группы</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Имя группы</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Regular user\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Admin\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"PM\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Developer\"\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./docs/v0.0.1/user/group_list.go",
+    "groupTitle": "03_Пользователи"
+  },
+  {
+    "type": "GET",
     "url": "/task_tracker/settings/permissions/list",
     "title": "Список разрешений",
     "name": "GetPermissionsList",
@@ -877,6 +1026,13 @@ define({ "api": [
             "optional": false,
             "field": "data.group_id",
             "description": "<p>Ид группы</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "data.department",
+            "description": "<p>Отдел пользователя в домене</p>"
           }
         ]
       },

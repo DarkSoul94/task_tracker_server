@@ -22,6 +22,8 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc user_manager.UserManagerU
 		settingsEndpoints.POST("/group/update", h.UpdateGroup)
 		//http://localhost:8585/task_tracker/settings/group/list
 		settingsEndpoints.GET("/group/list", h.GetGroupsList)
+		//http://localhost:8585/task_tracker/settings/group/:id
+		settingsEndpoints.GET("/group/:id", h.GetGroup)
 		//http://localhost:8585/task_tracker/settings/permissions/list
 		settingsEndpoints.GET("/permissions/list", h.GetPermList)
 	}

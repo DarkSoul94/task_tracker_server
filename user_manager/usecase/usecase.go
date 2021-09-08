@@ -50,13 +50,14 @@ func (u *Usecase) GetUsersList(user *models.User) ([]models.User, error) {
 	return userList, nil
 }
 
-func (u *Usecase) GetGroupByID(groupID uint64) (models.Group, error) {
+func (u *Usecase) GetGroupByID(user *models.User, groupID uint64) (models.Group, error) {
+	//TODO add permissions check
 	return u.repo.GetGroupByID(groupID)
 }
 
-func (u *Usecase) GetGroupList() ([]models.Group, error) {
-
-	return nil, nil
+func (u *Usecase) GetGroupList(user *models.User) ([]models.Group, error) {
+	//TODO add permissions check
+	return u.repo.GetGroupList()
 }
 
 func (u *Usecase) GroupUpdate(id uint64, permission []byte) error {

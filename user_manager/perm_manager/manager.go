@@ -23,7 +23,6 @@ func (m *Manager) CreateManagerFromActions(actions ...string) {
 			m.putToLayer(&m.permissions, permParts)
 		}
 	}
-	fmt.Println(m.permissions)
 }
 
 func (m *Manager) formPermLayer(actions []string) PermLayer {
