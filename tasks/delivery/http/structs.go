@@ -42,6 +42,7 @@ type outTask struct {
 	Project      *hProject   `json:"project"`
 	Priority     bool        `json:"priority"`
 	ExecOrder    int         `json:"exec_order"`
+	Tracked      bool        `json:"tracked"`
 }
 
 type outTaskForList struct {
@@ -53,6 +54,7 @@ type outTaskForList struct {
 	Status       *hStatus  `json:"status"`
 	Priority     bool      `json:"priority"`
 	ExecOrder    int       `json:"exec_order"`
+	Tracked      bool      `json:"tracked"`
 }
 
 type hCategory struct {

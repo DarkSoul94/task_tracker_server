@@ -25,6 +25,7 @@ type dbTask struct {
 	ProjectID    sql.NullInt64 `db:"project_id"`
 	Priority     bool          `db:"priority"`
 	ExecOrder    int           `db:"exec_order"`
+	Tracked      bool          `db:"tracked"`
 }
 
 type dbCategory struct {

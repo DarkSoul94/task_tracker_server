@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `project_id` INT UNSIGNED,
   `priority` TINYINT DEFAULT(0),
   `exec_order` INT UNSIGNED DEFAULT(0),
+  `tracked` TINYINT DEFAULT(0),
   PRIMARY KEY `pk_id`(`id`),
   CONSTRAINT FOREIGN KEY (`author_id`) REFERENCES `users`(`id`),
   CONSTRAINT FOREIGN KEY (`developer_id`) REFERENCES `users`(`id`),

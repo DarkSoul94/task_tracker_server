@@ -1,6 +1,8 @@
 package tasksUC
 
 import (
+	"time"
+
 	"github.com/DarkSoul94/task_tracker_server/models"
 	"github.com/DarkSoul94/task_tracker_server/tasks"
 	"github.com/DarkSoul94/task_tracker_server/tasks/usecase/updTaskDisp"
@@ -23,7 +25,7 @@ func NewUsecase(repo tasks.TasksRepo, userManager user_manager.UserManagerUC) *U
 	}
 }
 
-func (u *Usecase) CreateTask(task models.Task) error {
+func (u *Usecase) CreateTask(task *models.Task) error {
 	var err error
 	//TODO add permissions check
 
@@ -160,16 +162,21 @@ func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error
 				return ErrIsTracking
 			}
 		}
-
 		track.StartTrack(taskId, user)
 	} else {
 		if err != nil || !track.EndTime.IsZero() {
 			return ErrIsNotTracking
 		}
 		track.EndTrack()
-		//TODO: add track.difference to task.inworktime and update task
+		task.InWorkTime += time.Duration(track.Difference)
 	}
 	err = u.repo.InsertTaskTrack(track)
+	if err != nil {
+		return err
+	}
+
+	task.Tracked = status
+	err = u.repo.UpdateTask(task)
 	if err != nil {
 		return err
 	}

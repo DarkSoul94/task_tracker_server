@@ -16,7 +16,7 @@ func NewRepo(db *sql.DB) *Repo {
 	}
 }
 
-func (r *Repo) CreateTask(task models.Task) error {
+func (r *Repo) CreateTask(task *models.Task) error {
 	dbTask := r.toDBTask(task)
 	query := `
 		INSERT INTO tasks SET
@@ -32,13 +32,44 @@ func (r *Repo) CreateTask(task models.Task) error {
 		category_id = :category_id,
 		project_id = :project_id,
 		priority = :priority,
-		exec_order = :exec_order`
+		exec_order = :exec_order,
+		tracked = :tracked`
 	_, err := r.db.NamedExec(query, dbTask)
 	if err != nil {
 		errData := fmt.Sprintf("task author: %d %s", task.Author.ID, task.Author.Name)
 		logger.LogError("Failed insert new task to db", "task/repo/mysql", errData, err)
 		return err
 	}
+	return nil
+}
+
+func (r *Repo) UpdateTask(task *models.Task) error {
+	var (
+		dbTask dbTask
+		query  string
+		err    error
+	)
+
+	dbTask = r.toDBTask(task)
+	query = `UPDATE tasks SET
+				name = :name,
+				description = :description,
+				in_work_time= :in_work_time,
+				developer_id = :developer_id,
+				customer_id = :customer_id,
+				status_id = :status_id,
+				category_id = :category_id,
+				project_id = :project_id,
+				priority = :priority,
+				exec_order = :exec_order,
+				tracked = :tracked
+				WHERE id = :id`
+	_, err = r.db.NamedExec(query, &dbTask)
+	if err != nil {
+		logger.LogError(ErrUpdateTask.Error(), "task/repo/mysql", strconv.FormatUint(dbTask.ID, 10), err)
+		return ErrUpdateTask
+	}
+
 	return nil
 }
 
@@ -141,7 +172,7 @@ func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (*models.TaskTrack, error
 	err = r.db.Get(&dbTrack, query, taskID, userID)
 	if err != nil {
 		logger.LogError(ErrGetTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
-		return nil, ErrGetTrack
+		return &models.TaskTrack{}, ErrGetTrack
 	}
 
 	mTrack = r.toModelTaskTrack(dbTrack)
