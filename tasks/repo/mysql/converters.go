@@ -58,6 +58,7 @@ func (r *Repo) toModelTask(dbTask dbTask) *models.Task {
 		},
 		Priority:  dbTask.Priority,
 		ExecOrder: dbTask.ExecOrder,
+		Tracked:   dbTask.Tracked,
 	}
 
 	ts.SetByID(dbTask.StatusID)

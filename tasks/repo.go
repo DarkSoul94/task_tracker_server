@@ -9,7 +9,7 @@ type TasksRepo interface {
 	GetTask(taskID uint64) (*models.Task, error)
 
 	InsertTaskTrack(tackTrack *models.TaskTrack) error
-	GetLastTaskTrack(taskID, userID uint64) (*models.TaskTrack, error)
+	GetLastUserTaskTrack(userID uint64) (*models.TaskTrack, error)
 
 	GetCategoryByID(id uint64) (*models.Category, error)
 	GetCategoryList() ([]*models.Category, error)

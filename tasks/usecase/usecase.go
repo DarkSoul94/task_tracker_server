@@ -155,10 +155,12 @@ func (u *Usecase) TrackTask(taskId uint64, user *models.User, status bool) error
 		return ErrNotInWork
 	}*/
 
-	track, err = u.repo.GetLastTaskTrack(taskId, user.ID)
+	track, err = u.repo.GetLastUserTaskTrack(user.ID)
 	if status {
-		if err == nil {
-			if track.EndTime.IsZero() {
+		if err == nil && track.EndTime.IsZero() {
+			if track.ID != taskId {
+				return ErrOtherTaskIsTracking
+			} else {
 				return ErrIsTracking
 			}
 		}

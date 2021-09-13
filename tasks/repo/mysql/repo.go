@@ -88,7 +88,8 @@ func (r *Repo) GetTasksList(user models.User) ([]*models.Task, error) {
 				in_work_time,
 				status_id,
 				priority,
-				exec_order
+				exec_order,
+				tracked
 			FROM tasks `
 
 	err := r.db.Select(&dbTasks, query)
@@ -102,6 +103,7 @@ func (r *Repo) GetTasksList(user models.User) ([]*models.Task, error) {
 	for _, task := range dbTasks {
 		mTasks = append(mTasks, r.toModelTask(task))
 	}
+
 	return mTasks, nil
 }
 
@@ -158,7 +160,7 @@ func (r *Repo) InsertTaskTrack(tackTrack *models.TaskTrack) error {
 	return nil
 }
 
-func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (*models.TaskTrack, error) {
+func (r *Repo) GetLastUserTaskTrack(userID uint64) (*models.TaskTrack, error) {
 	var (
 		dbTrack dbTaskTrack
 		mTrack  *models.TaskTrack
@@ -167,11 +169,11 @@ func (r *Repo) GetLastTaskTrack(taskID, userID uint64) (*models.TaskTrack, error
 	)
 
 	query = `SELECT * FROM task_track WHERE
-	task_id = ? AND user_id = ?
+	user_id = ?
 	ORDER BY id DESC LIMIT 1`
-	err = r.db.Get(&dbTrack, query, taskID, userID)
+	err = r.db.Get(&dbTrack, query, userID)
 	if err != nil {
-		logger.LogError(ErrGetTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("task_id: %d, user_id: %d", taskID, userID), err)
+		logger.LogError(ErrGetTrack.Error(), "tasks/repo/mysql", fmt.Sprintf("user_id: %d", userID), err)
 		return &models.TaskTrack{}, ErrGetTrack
 	}
 

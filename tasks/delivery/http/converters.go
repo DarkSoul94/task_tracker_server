@@ -130,6 +130,7 @@ func (h *Handler) toOutTaskForList(task *models.Task) outTaskForList {
 		},
 		Priority:  task.Priority,
 		ExecOrder: task.ExecOrder,
+		Tracked:   task.Tracked,
 	}
 }
 
