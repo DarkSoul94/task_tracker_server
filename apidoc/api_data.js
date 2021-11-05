@@ -1,33 +1,5 @@
 define({ "api": [
   {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./apidoc/main.js",
-    "group": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
-    "groupTitle": "/home/slava/prodjects/task_tracker_server/apidoc/main.js",
-    "name": ""
-  },
-  {
     "type": "POST",
     "url": "/task_tracker/auth/signin",
     "title": "Авторизация",
@@ -488,13 +460,20 @@ define({ "api": [
             "optional": false,
             "field": "data.exec_order",
             "description": "<p>Порядок выполнения задачи. 1 - стандартный, 10 - наивысшый.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Bool",
+            "optional": false,
+            "field": "data.tracked",
+            "description": "<p>Признак показывающий работает программист над задачей или нет.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"test\",\n    \"description\": \"test\",\n    \"creation_date\": \"2021-08-31T11:21:13+03:00\",\n    \"in_work_time\": \"1h23m20s\",\n    \"status\": {\n      \"id\": 2,\n      \"name\": \"Очередь к реализации\"\n    },\n    \"author\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"developer\": {\n      \"id\": 2,\n      \"name\": \"\"\n    },\n    \"customer\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"category\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"project\": null,\n    \"priority\": true,\n    \"exec_order\": 0\n  }\n}",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"test\",\n    \"description\": \"test\",\n    \"creation_date\": \"2021-08-31T11:21:13+03:00\",\n    \"in_work_time\": \"1h23m20s\",\n    \"status\": {\n      \"id\": 2,\n      \"name\": \"Очередь к реализации\"\n    },\n    \"author\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"developer\": {\n      \"id\": 2,\n      \"name\": \"\"\n    },\n    \"customer\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"category\": {\n      \"id\": 1,\n      \"name\": \"\"\n    },\n    \"project\": null,\n    \"priority\": true,\n    \"exec_order\": 0,\n    \"tracked\": false\n  }\n}",
           "type": "type"
         }
       ]
@@ -672,13 +651,20 @@ define({ "api": [
             "optional": false,
             "field": "data.exec_order",
             "description": "<p>Порядок выполнения задачи. 1 - стандартный, 10 - наивысшый.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Bool",
+            "optional": false,
+            "field": "data.tracked",
+            "description": "<p>Признак показывающий работает программист над задачей или нет.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\",\n      \"description\": \"test\",\n      \"creation_date\": \"2021-08-31T11:21:13+03:00\",\n      \"in_work_time\": \"1h23m20s\",\n      \"status\": {\n        \"id\": 2,\n        \"name\": \"Очередь к реализации\"\n      },\n      \"priority\": true,\n      \"exec_order\": 0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"banner\",\n      \"description\": \"banner\",\n      \"creation_date\": \"2021-08-31T11:21:28+03:00\",\n      \"in_work_time\": \"0s\",\n      \"status\": {\n        \"id\": 1,\n        \"name\": \"Новая\"\n      },\n      \"priority\": false,\n      \"exec_order\": 0\n    }\n  ]\n}",
+          "content": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"test\",\n      \"description\": \"test\",\n      \"creation_date\": \"2021-08-31T11:21:13+03:00\",\n      \"in_work_time\": \"1h23m20s\",\n      \"status\": {\n        \"id\": 2,\n        \"name\": \"Очередь к реализации\"\n      },\n      \"priority\": true,\n      \"exec_order\": 0,\n    \t \"tracked\": false\n    },\n    {\n      \"id\": 2,\n      \"name\": \"banner\",\n      \"description\": \"banner\",\n      \"creation_date\": \"2021-08-31T11:21:28+03:00\",\n      \"in_work_time\": \"0s\",\n      \"status\": {\n        \"id\": 1,\n        \"name\": \"Новая\"\n      },\n      \"priority\": false,\n      \"exec_order\": 0,\n    \t \"tracked\": false\n    }\n  ]\n}",
           "type": "json"
         }
       ]

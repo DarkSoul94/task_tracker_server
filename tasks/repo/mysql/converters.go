@@ -6,7 +6,7 @@ import (
 	"github.com/DarkSoul94/task_tracker_server/models"
 )
 
-func (r *Repo) toDBTask(task models.Task) dbTask {
+func (r *Repo) toDBTask(task *models.Task) dbTask {
 	dbTask := dbTask{
 		ID:           task.ID,
 		Name:         task.Name,
@@ -18,6 +18,7 @@ func (r *Repo) toDBTask(task models.Task) dbTask {
 		StatusID:     task.Status.ID,
 		Priority:     task.Priority,
 		ExecOrder:    task.ExecOrder,
+		Tracked:      task.Tracked,
 	}
 	if task.Developer != nil {
 		dbTask.DeveloperID = sql.NullInt64{
@@ -57,6 +58,7 @@ func (r *Repo) toModelTask(dbTask dbTask) *models.Task {
 		},
 		Priority:  dbTask.Priority,
 		ExecOrder: dbTask.ExecOrder,
+		Tracked:   dbTask.Tracked,
 	}
 
 	ts.SetByID(dbTask.StatusID)

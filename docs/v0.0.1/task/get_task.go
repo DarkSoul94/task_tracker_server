@@ -42,6 +42,7 @@ package task
  * @apiSuccess (Success 200) {String} 		data.project.name 		Название проекта
  * @apiSuccess (Success 200) {Bool} 		data.priority 			Приоритет задачи (`true` - экстренный, `false` - стандартный )
  * @apiSuccess (Success 200) {Uint64} 		data.exec_order			Порядок выполнения задачи. 1 - стандартный, 10 - наивысшый.
+ * @apiSuccess (Success 200) {Bool} 		data.tracked			Признак показывающий работает программист над задачей или нет.
  *
  * @apiSuccessExample {type} Success-Response:
  * {
@@ -74,7 +75,8 @@ package task
  *     },
  *     "project": null,
  *     "priority": true,
- *     "exec_order": 0
+ *     "exec_order": 0,
+ *     "tracked": false
  *   }
  * }
  *

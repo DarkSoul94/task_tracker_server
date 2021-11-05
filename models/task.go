@@ -16,6 +16,7 @@ type Task struct {
 	Project      *Project
 	Priority     bool
 	ExecOrder    int
+	Tracked      bool
 }
 
 func (t *Task) FillNewTask() {
@@ -27,7 +28,5 @@ func (t *Task) FillNewTask() {
 	}
 	t.CreationDate = time.Now().Truncate(time.Second)
 	t.InWorkTime = 0
-	if t.ExecOrder == 0 {
-		t.ExecOrder = 1
-	}
+	t.Tracked = false
 }
