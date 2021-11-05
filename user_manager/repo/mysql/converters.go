@@ -1,24 +1,15 @@
 package mysql
 
 import (
-	"encoding/json"
-	"strconv"
-
 	"github.com/DarkSoul94/task_tracker_server/models"
-	"github.com/DarkSoul94/task_tracker_server/pkg/logger"
-	"github.com/DarkSoul94/task_tracker_server/user_manager/perm_manager"
 )
 
 func (r *Repo) toModelGroup(dbGroup dbGroup) models.Group {
-	var temp perm_manager.PermLayer
-	err := json.Unmarshal(dbGroup.Permissions, &temp)
-	if err != nil {
-		logger.LogError(ErrReadGroup.Error(), "user_manager/repo/mysql", strconv.FormatUint(dbGroup.ID, 10), err)
-	}
+
 	mGroup := models.Group{
 		ID:          dbGroup.ID,
 		Name:        dbGroup.Name,
-		Permissions: temp,
+		Permissions: dbGroup.Permissions,
 	}
 	return mGroup
 }

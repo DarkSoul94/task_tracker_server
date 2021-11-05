@@ -99,10 +99,8 @@ func (h *Handler) GetGroupsList(ctx *gin.Context) {
 }
 
 func (h *Handler) GetPermList(ctx *gin.Context) {
-	perm, err := h.ucUserManager.GetFullPermListInBytes()
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, Response{Status: global_const.StatusError, Error: err.Error()})
-		return
-	}
-	ctx.JSON(http.StatusOK, Response{Status: global_const.StatusSuccess, Data: h.toOutPermissions(perm)})
+	perm := h.ucUserManager.GetFullPermListInBytes()
+	ctx.Writer.Header().Set("Content-Type", "application/json")
+	ctx.Writer.WriteHeader(200)
+	ctx.Writer.Write(perm)
 }

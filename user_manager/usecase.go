@@ -2,7 +2,6 @@ package user_manager
 
 import (
 	"github.com/DarkSoul94/task_tracker_server/models"
-	"github.com/DarkSoul94/task_tracker_server/user_manager/perm_manager"
 )
 
 type UserManagerUC interface {
@@ -17,5 +16,5 @@ type UserManagerUC interface {
 	GroupUpdate(id uint64, permission []byte) error
 	CreateGroup(name string, permissions []byte) (uint64, error)
 
-	GetFullPermListInBytes() (perm_manager.PermLayer, error)
+	GetFullPermListInBytes() []byte
 }
